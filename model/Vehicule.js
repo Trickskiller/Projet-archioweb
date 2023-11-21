@@ -22,7 +22,7 @@ const vehiculeSchema = new mongoose.Schema({
     required: true,
   },
   // Relation avec le modèle User pour savoir à qui appartient le véhicule
-  owner: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -30,4 +30,4 @@ const vehiculeSchema = new mongoose.Schema({
 });
 
 // Exportation du modèle Véhicule pour l'utiliser ailleurs dans l'application
-export const Vehicule = model('Vehicule', vehiculeSchema);
+export const Vehicule = model("Vehicule", vehiculeSchema);

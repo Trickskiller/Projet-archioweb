@@ -57,5 +57,4 @@ userSchema.pre("save", function (next) {
 }); // Exportation du modèle User pour l'utiliser ailleurs dans l'application
 // const User = mongoose.model("User", userSchema);
 
-export const User = model('User', userSchema);
-
+export const User = model("User", userSchema);

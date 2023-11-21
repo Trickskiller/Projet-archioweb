@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 // import config from "../../config.js";
 import { User } from "../model/User.js";
+import authenticate from "../auth.js";
 
 const router = express.Router();
 const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser une clé secrète plus complexe et la stocker en sécurité.
@@ -18,7 +19,7 @@ router.get("/", async (req, res) => {
 });
 
 // Route pour obtenir un utilisateur par son ID
-router.get("/users/:userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const user = await User.findById(req.params.userId, "-password"); // N'exposez pas le mot de passe
     if (!user) {
@@ -31,15 +32,25 @@ router.get("/users/:userId", async (req, res) => {
 });
 
 // Route de mise à jour d'un utilisateur par son ID
-router.put("/users/:userId", async (req, res) => {
+router.put("/:userId", async (req, res) => {
   try {
     const { firstName, lastName, userName, password } = req.body;
+
+    //const user = User.findOne({_id:req.params.userId});
 
     // Vous pouvez ajouter des vérifications et des validations supplémentaires ici
 
     const updatedUser = await User.findByIdAndUpdate(
-      req.params.userId,
-      { firstName, lastName, userName, password },
+      { _id: req.params.userId },
+      {
+        firstName: req.body.firstName,
+
+        lastName: req.body.lastName,
+
+        userName: req.body.userName,
+
+        password: req.body.password,
+      },
       { new: true }
     );
 

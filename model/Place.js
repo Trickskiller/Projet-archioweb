@@ -52,7 +52,7 @@ const placeSchema = new mongoose.Schema({
     required: true,
   },
   // Relation avec le modèle User pour savoir qui a posté la place
-  postedBy: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -63,4 +63,4 @@ const placeSchema = new mongoose.Schema({
 // const Place = mongoose.model("Place", placeSchema);
 // module.exports = Place;
 
-export const Place = model('Place', placeSchema);
+export const Place = model("Place", placeSchema);
