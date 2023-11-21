@@ -45,16 +45,16 @@ const userSchema = new Schema({
     required: true,
   },
 });
-// Hook pre-save pour hacher le mot de passe avant d'enregistrer l'utilisateur
-userSchema.pre("save", function (next) {
-  const user = this;
-  if (!user.isModified("password")) return next();
-  bcrypt.hash(user.password, 10, (err, hash) => {
-    if (err) return next(err);
-    user.password = hash;
-    next();
-  });
-}); // Exportation du modèle User pour l'utiliser ailleurs dans l'application
-// const User = mongoose.model("User", userSchema);
+
+userSchema.set("toJSON", {
+  transform: transformJsonUser
+});
+function transformJsonUser(doc, json, options) {
+ // Remove the hashed password from the generated JSON.
+ delete json.password;
+ return json;
+}
+
+// Exportation du modèle User pour l'utiliser ailleurs dans l'application
 
 export const User = model("User", userSchema);

@@ -21,6 +21,11 @@ function isLongitude(value) {
 
 // Définition du schéma Place
 const placeSchema = new mongoose.Schema({
+
+  id: {
+    type: mongoose.ObjectId
+  },
+
   description: {
     type: String,
     required: true,
@@ -35,8 +40,7 @@ const placeSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: validateGeoJsonCoordinates,
-      message: (props) =>
-        `${props.value} n'est pas une coordonnée géographique valide!`,
+      message: '{VALUE} est pas une coordonnée géographique valide!',
     },
   },
   picture: {
@@ -45,22 +49,21 @@ const placeSchema = new mongoose.Schema({
   },
   availabilityDate: {
     type: Date,
-    required: true,
-  },
-  availabilityTime: {
-    type: String,
-    required: true,
+    required: false,
   },
   // Relation avec le modèle User pour savoir qui a posté la place
   userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: mongoose.ObjectId,
     required: true,
   },
+  
+
 });
+
 
 // Exportation du modèle Place pour l'utiliser ailleurs dans l'application
 // const Place = mongoose.model("Place", placeSchema);
 // module.exports = Place;
 
 export const Place = model("Place", placeSchema);
+

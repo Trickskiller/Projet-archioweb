@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 // import config from "../../config.js";
 import { Vehicule } from "../model/Vehicule.js";
+import authenticate from "../auth.js";
 
 const router = express.Router();
 
@@ -19,6 +20,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/", authenticate, async (req, res) => {
+  try {
+    const newVehicule = new Vehicule(req.body)
+
+    console.log(newVehicule)
+    await newVehicule.save()
+    res.status(201).send("Véhicule enregistré avec succès.");
+  } catch (error) {
+    res
+    .status(500)
+    .json({error: "Erreur de création de véhicule"})
+  }
+})
 // module.exports = router;
 
 export default router;

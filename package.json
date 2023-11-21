@@ -1,11 +1,13 @@
 {
-  "name": "parking",
+  "name": "Parking App",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "nodemon",
-    "start": "node ./bin/start"
+    "start": "node ./bin/start",
+    "apidoc": "apidoc -i routes -o docs",
+    "test": "cross-env DATABASE_URL=mongodb://127.0.0.1:27017/parking-app-test node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -19,9 +21,12 @@
     "mongodb": "^6.2.0",
     "mongoose": "^7.6.3",
     "morgan": "~1.10.0",
-    "swagger-ui-express": "^5.0.0"
+    "path": "^0.12.7",
+    "swagger-ui-express": "^5.0.0",
+    "ws": "^8.14.2"
   },
   "devDependencies": {
+    "apidoc": "^1.2.0",
     "nodemon": "^3.0.1"
   }
 }

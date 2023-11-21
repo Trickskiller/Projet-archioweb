@@ -6,11 +6,10 @@ import usersRouter from "./routes/users.js";
 import vehiculesRouter from "./routes/vehicules.js";
 import loginRouter from "./routes/login.js";
 import placesRouter from "./routes/places.js";
+import path from 'path'
 
 import mongoose from "mongoose";
-// import fs from "fs";
-// import yaml from "js-yaml";
-// import swaggerUi from "swagger-ui-express";
+
 import cors from "cors";
 mongoose.connect(
   process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/ParkingLocationApp"
@@ -19,16 +18,10 @@ mongoose.connect(
 const app = express();
 app.use(cors());
 
-// Parse the OpenAPI document.
-//const openApiDocument = yaml.load(fs.readFileSync("./openapi.yml"));
-// Serve the Swagger UI documentation.
-//app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+// Serve the apiDoc documentation.
+const __dirname = path.resolve();
+app.use('/apidoc', express.static(path.join(__dirname, 'docs')));
 
-// app.use(function myMiddleware(req, res, next) {
-//   console.log("Hello World!");
-//   res.send("Hello World!");
-//   next();
-// });
 
 app.use(logger("dev"));
 app.use(express.json());
