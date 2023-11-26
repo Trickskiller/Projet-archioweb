@@ -37,6 +37,38 @@ const user = await User.findOne ({_id: req.currentUserId})
     .send("Erreur de création de place")
   }
 })
+
+// Route de mise à jour d'un véhicule par son ID, avec vérification du propriétaire
+router.put("/:placeId", authenticate , async (req, res) => {
+  try {
+    const _id = req.params.placeId;
+    const updateData = req.body;
+
+    // Rechercher le véhicule par ID
+
+
+    // Vérifier si le véhicule existe
+    if (!place) {
+      return res.status(404).json({ error: "Place non trouvé" });
+    }
+
+    // Vérifier si l'utilisateur authentifié est le propriétaire du véhicule
+    if (userId !== req.currentUserId) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
+
+    // Mise à jour du véhicule
+
+    res.status(200).json({ message: "Place mis à jour avec succès", updatedPlace });
+  } catch (error) {
+    res
+
+    .status(500)
+    .json({error: "Erreur de mise à jour de place"})
+  }
+})
+
+
 // module.exports = router;
 
 export default router;

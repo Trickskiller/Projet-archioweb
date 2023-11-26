@@ -33,6 +33,35 @@ router.post("/", authenticate, async (req, res) => {
     .json({error: "Erreur de création de véhicule"})
   }
 })
+
+// Route de mise à jour d'un véhicule par son ID, avec vérification du propriétaire
+router.put("/:vehiculeId", authenticate , async (req, res) => {
+  try {
+    const _id = req.params.vehiculeId;
+    const updateData = req.body;
+    
+    // Rechercher le véhicule par ID
+    const vehicule = await Vehicule.findById(vehiculeId);
+
+    // Vérifier si le véhicule existe
+    if (!vehicule) {
+      return res.status(404).json({ error: "Véhicule non trouvé" });
+    }
+
+    // Vérifier si l'utilisateur authentifié est le propriétaire du véhicule
+    if (userId !== req.currentUserId) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
+
+    // Mise à jour du véhicule
+    const updatedVehicule = await Vehicule.findByIdAndUpdate(vehiculeId, updateData, { new: true });
+
+    res.status(200).json({ message: "Véhicule mis à jour avec succès", updatedVehicule });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la mise à jour du véhicule" });
+  }
+});
+
 // module.exports = router;
 
 export default router;

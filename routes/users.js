@@ -38,8 +38,6 @@ router.put("/:userId", async (req, res) => {
 
     //const user = User.findOne({_id:req.params.userId});
 
-    // Vous pouvez ajouter des vérifications et des validations supplémentaires ici
-
     const updatedUser = await User.findByIdAndUpdate(
       { _id: req.params.userId },
       {
@@ -58,7 +56,8 @@ router.put("/:userId", async (req, res) => {
       return res.status(404).json({ error: "Utilisateur non trouvé" });
     }
 
-    res.json(updatedUser);
+    res.status(201).send("Utilisateur modifié avec succès.");
+    
   } catch (error) {
     res
       .status(500)
@@ -66,6 +65,40 @@ router.put("/:userId", async (req, res) => {
   }
 });
 
-// module.exports = router;
+// Route pour supprimer un utilisateur par son ID
+router.delete("/:userId", async (req, res) => {
+  try {
+    const { firstName, lastName, userName, password } = req.body;
+
+    const deleteUser = await User.findByIdAndDelete (
+
+    { _id: req.params.userId },
+    {
+      firstName: req.body.firstName,
+
+      lastName: req.body.lastName,
+
+      userName: req.body.userName,
+
+      password: req.body.password,
+    },
+    { new: true }
+);
+
+console.log (deleteUser);
+if (!deleteUser) {
+  return res.status(404).json({ error: "Utilisateur non trouvé" });
+}
+
+res.status(201).send("Utilisateur supprimé avec succès.");
+
+
+} catch (error) {
+res
+  .status(500)
+  .json({ error: "Erreur lors de la suppression de l'utilisateur" });
+}
+});
+
 
 export default router;
