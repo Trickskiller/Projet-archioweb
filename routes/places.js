@@ -25,50 +25,77 @@ router.get("/", async (req, res) => {
 
 router.post("/", authenticate, async (req, res) => {
   try {
-    const newPlace = new Place(req.body)
+    console.log("Current User ID:", req.currentUserId); // Vérifiez si l'ID de l'utilisateur est correctement reçu
+    console.log("Request Body:", req.body); // Vérifiez les données reçues dans la requête
 
-    console.log(newPlace)
-    await newPlace.save()
-    res.status(201).send("Place enregistré avec succès.");
-const user = await User.findOne ({_id: req.currentUserId})
-    broadcastMessage({Update : `New reservation made by ${user.userName}`, newPlace})
+    const newPlace = new Place({
+      ...req.body,
+      userId: req.currentUserId // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+    });
+
+    await newPlace.save();
+    res.status(201).json({ message: "Place créée avec succès", newPlace });
   } catch (error) {
-    res
-    .status(403)
-    .send("Erreur de création de place")
+    console.error("Erreur lors de la création de la place:", error); // Log d'erreur plus détaillé
+    res.status(500).json({ error: error.message });
   }
-})
+});
 
-// Route de mise à jour d'un véhicule par son ID, avec vérification du propriétaire
-router.put("/:placeId", authenticate , async (req, res) => {
+
+router.put("/:placeId", authenticate, async (req, res) => {
   try {
-    const _id = req.params.placeId;
+    const placeId = req.params.placeId;
     const updateData = req.body;
+    const userId = req.currentUserId; // Assurez-vous que l'utilisateur authentifié est attaché à la requête
 
-    // Rechercher le véhicule par ID
+    // Rechercher la place par ID
+    const place = await Place.findById(placeId);
 
-
-    // Vérifier si le véhicule existe
+    // Vérifier si la place existe
     if (!place) {
-      return res.status(404).json({ error: "Place non trouvé" });
+      return res.status(404).json({ error: "Place non trouvée" });
     }
 
-    // Vérifier si l'utilisateur authentifié est le propriétaire du véhicule
-    if (userId !== req.currentUserId) {
+    // Vérifier si l'utilisateur authentifié est le propriétaire de la place
+    if (place.userId.toString() !== userId.toString()) {
       return res.status(403).json({ error: "Action non autorisée" });
     }
 
-    // Mise à jour du véhicule
+    // Mise à jour de la place
+    const updatedPlace = await Place.findByIdAndUpdate(placeId, updateData, { new: true });
 
-    res.status(200).json({ message: "Place mis à jour avec succès", updatedPlace });
+    res.status(200).json({ message: "Place mise à jour avec succès", updatedPlace });
   } catch (error) {
-    res
-
-    .status(500)
-    .json({error: "Erreur de mise à jour de place"})
+    res.status(500).json({ error: "Erreur lors de la mise à jour de la place" });
   }
-})
+});
 
+router.delete("/:placeId", authenticate, async (req, res) => {
+  try {
+    const placeId = req.params.placeId;
+    const userId = req.currentUserId; // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+
+    // Rechercher la place par ID
+    const place = await Place.findById(placeId);
+
+    // Vérifier si la place existe
+    if (!place) {
+      return res.status(404).json({ error: "Place non trouvée" });
+    }
+
+    // Vérifier si l'utilisateur authentifié est le propriétaire de la place
+    if (place.userId.toString() !== userId.toString()) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
+
+    // Suppression de la place
+    await Place.findByIdAndDelete(placeId);
+
+    res.status(200).json({ message: "Place supprimée avec succès" });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la suppression de la place" });
+  }
+});
 
 // module.exports = router;
 
