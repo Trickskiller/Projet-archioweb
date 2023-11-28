@@ -8,6 +8,7 @@ import { broadcastMessage } from "../ws.js";
 import { User } from "../model/User.js";
 import { Vehicule } from "../model/Vehicule.js";
 import { Reservation } from "../model/Reservation.js";
+import schedule from 'node-schedule';
 
 const router = express.Router();
 
@@ -23,6 +24,44 @@ router.get("/", async (req, res) => {
     }
   });
 
+  router.get("/place/:placeId/reservations", authenticate, async (req, res) => {
+    try {
+      const placeId = req.params.placeId;
+      const userId = req.currentUserId; // ID de l'utilisateur authentifié
+  
+      // Rechercher la place pour vérifier le propriétaire
+      const place = await Place.findById(placeId);
+      if (!place) {
+        return res.status(404).json({ error: "Place non trouvée" });
+      }
+  
+      // Vérifier si l'utilisateur authentifié est le propriétaire de la place
+      if (place.userId.toString() !== userId.toString()) {
+        return res.status(403).json({ error: "Accès non autorisé" });
+      }
+  
+      // Rechercher toutes les réservations pour la place spécifiée
+      const reservations = await Reservation.find({ parkingId: placeId })
+        .populate('renterUserId', 'firstName lastName userName');
+  
+      if (!reservations || reservations.length === 0) {
+        return res.status(404).json({ message: "Aucune réservation trouvée pour cette place" });
+      }
+  
+      const renters = reservations.map(reservation => ({
+        userId: reservation.renterUserId._id,
+        userName: reservation.renterUserId.userName,
+        startDate: reservation.startDate,
+        endDate: reservation.endDate
+      }));
+  
+      res.status(200).json({ reservations: renters });
+    } catch (error) {
+      res.status(500).json({ error: "Erreur lors de la récupération des réservations" });
+    }
+  });
+  
+
 // Route pour créer une nouvelle réservation
 router.post("/", authenticate, async (req, res) => {
   try {
@@ -36,6 +75,7 @@ router.post("/", authenticate, async (req, res) => {
 
     // Récupérer les détails de la place pour obtenir l'ID du propriétaire
     const placeDetails = await Place.findOne({ _id: parkingId });
+    console.log("Détails de la place:", placeDetails);
 
     // Vérifier si la place existe
     if (!placeDetails) {
@@ -43,6 +83,18 @@ router.post("/", authenticate, async (req, res) => {
         .status(404)
         .send("La place de parking spécifiée n'existe pas.");
     }
+
+     // Vérifier s'il existe déjà une réservation pour la même place aux mêmes dates
+     const existingReservation = await Reservation.findOne({
+      parkingId: parkingId,
+      startDate: { $lte: new Date(endDate) },
+      endDate: { $gte: new Date(startDate) }
+    });
+
+    if (existingReservation) {
+      return res.status(400).send("Une réservation existe déjà pour ces dates.");
+    }
+
 
     // Créer une nouvelle réservation avec les données de la requête
     const newReservation = new Reservation({
@@ -66,10 +118,14 @@ router.post("/", authenticate, async (req, res) => {
       reservation: newReservation,
     });
 
-    // Diffuser un message de notification
+    // Envoyer une notification au propriétaire de la place
+
+    const ownerUser = await User.findById(placeDetails.userId);
+
     broadcastMessage({
-      update: `Nouvelle réservation effectuée par ${user.userName}`,
+      update: `Nouvelle réservation sur votre place par ${user.userName}`,
       newReservation,
+      owner: ownerUser.userName
     });
   } catch (error) {
     console.error("Erreur de création de réservation:", error);
@@ -77,7 +133,67 @@ router.post("/", authenticate, async (req, res) => {
       .status(500)
       .send("Erreur interne du serveur lors de la création de la réservation.");
   }
+
+  const notificationTime = new Date(newReservation.endDate.getTime() - 30 * 60000); // 30 minutes avant la fin
+
+schedule.scheduleJob(notificationTime, function() {
+  broadcastMessage({
+    update: `Votre réservation se termine dans 30 minutes.`,
+    reservation: newReservation
+  });
 });
+
+});
+
+router.put("/:reservationId", authenticate, async (req, res) => {
+  try {
+    const reservationId = req.params.reservationId;
+    const updateData = req.body;
+    const userId = req.currentUserId;
+
+    const reservation = await Reservation.findById(reservationId);
+    if (!reservation) {
+      return res.status(404).json({ error: "Réservation non trouvée" });
+    }
+
+    if (reservation.renterUserId.toString() !== userId) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
+
+    const updatedReservation = await Reservation.findByIdAndUpdate(
+      reservationId,
+      updateData,
+      { new: true }
+    );
+
+    res.status(200).json({ message: "Réservation mise à jour avec succès", updatedReservation });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la mise à jour de la réservation" });
+  }
+});
+
+router.delete("/:reservationId", authenticate, async (req, res) => {
+  try {
+    const reservationId = req.params.reservationId;
+    const userId = req.currentUserId;
+
+    const reservation = await Reservation.findById(reservationId);
+    if (!reservation) {
+      return res.status(404).json({ error: "Réservation non trouvée" });
+    }
+
+    if (reservation.renterUserId.toString() !== userId) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
+
+    await Reservation.findByIdAndDelete(reservationId);
+
+    res.status(200).json({ message: "Réservation supprimée avec succès" });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la suppression de la réservation" });
+  }
+});
+
 
 
 export default router;

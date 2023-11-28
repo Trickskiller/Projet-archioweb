@@ -23,6 +23,24 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:placeId", async (req, res) => {
+  try {
+    const placeId = req.params.placeId;
+
+    // Recherche de la place par son ID
+    const place = await Place.findById(placeId);
+
+    // Vérifier si la place a été trouvée
+    if (!place) {
+      return res.status(404).json({ error: "Place non trouvée" });
+    }
+
+    res.status(200).json(place);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la récupération de la place" });
+  }
+});
+
 router.post("/", authenticate, async (req, res) => {
   try {
     console.log("Current User ID:", req.currentUserId); // Vérifiez si l'ID de l'utilisateur est correctement reçu

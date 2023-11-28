@@ -23,6 +23,7 @@ const reservationSchema = new Schema({
   renterUserId: {
     type: mongoose.ObjectId,
     required: true,
+    ref: 'User'
   },
   ownerUserId: {
     type: mongoose.ObjectId,
