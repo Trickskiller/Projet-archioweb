@@ -66,12 +66,39 @@ router.put("/:vehiculeId", authenticate, async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Véhicule mis à jour avec succès", updatedVehicule });
+      .json({ message: "Véhicule mis à jour avec succès"});
   } catch (error) {
     console.error("Erreur lors de la mise à jour:", error);
     res
       .status(500)
       .json({ error: "Erreur lors de la mise à jour du véhicule" });
+  }
+});
+
+router.delete("/:vehiculeId", authenticate, async (req, res) => {
+  try {
+    const vehiculeId = req.params.vehiculeId;
+    const userId = req.currentUserId; // Assurez-vous que l'ID de l'utilisateur actuel est attaché à la requête
+
+    // Rechercher le véhicule par ID
+    const vehicule = await Vehicule.findById(vehiculeId);
+
+    // Vérifier si le véhicule existe
+    if (!vehicule) {
+      return res.status(404).json({ error: "Véhicule non trouvé" });
+    }
+
+    // Vérifier si l'utilisateur authentifié est le propriétaire du véhicule
+    if (vehicule.userId.toString() !== userId.toString()) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
+
+    // Suppression du véhicule
+    await Vehicule.findByIdAndDelete(vehiculeId);
+
+    res.status(200).json({ message: "Véhicule supprimé avec succès" });
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la suppression du véhicule" });
   }
 });
 

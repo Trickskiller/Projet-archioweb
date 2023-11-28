@@ -65,34 +65,26 @@ router.put("/:userId", async (req, res) => {
 });
 
 // Route pour supprimer un utilisateur par son ID
-router.delete("/:userId", async (req, res) => {
+router.delete("/:userId", authenticate, async (req, res) => {
   try {
-    const { firstName, lastName, userName, password } = req.body;
+    const userId = req.params.userId;
+    const authUserId = req.currentUserId; // Assurez-vous que l'ID de l'utilisateur authentifié est attaché à la requête
 
-    const deleteUser = await User.findByIdAndDelete(
-      { _id: req.params.userId },
-      {
-        firstName: req.body.firstName,
+    // Vérifier si l'utilisateur authentifié tente de supprimer son propre compte
+    if (userId !== authUserId) {
+      return res.status(403).json({ error: "Action non autorisée" });
+    }
 
-        lastName: req.body.lastName,
+    // Rechercher et supprimer l'utilisateur
+    const user = await User.findByIdAndDelete(userId);
 
-        userName: req.body.userName,
-
-        password: req.body.password,
-      },
-      { new: true }
-    );
-
-    console.log(deleteUser);
-    if (!deleteUser) {
+    if (!user) {
       return res.status(404).json({ error: "Utilisateur non trouvé" });
     }
 
-    res.status(201).send("Utilisateur supprimé avec succès.");
+    res.status(200).json({ message: "Utilisateur supprimé avec succès" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Erreur lors de la suppression de l'utilisateur" });
+    res.status(500).json({ error: "Erreur lors de la suppression de l'utilisateur" });
   }
 });
 
