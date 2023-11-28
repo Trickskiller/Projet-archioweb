@@ -6,6 +6,7 @@ import { Place } from "../model/Place.js";
 import authenticate from "../auth.js";
 import { broadcastMessage } from "../ws.js";
 import { User } from "../model/User.js";
+import { Vehicule } from "../model/Vehicule.js";
 
 const router = express.Router();
 

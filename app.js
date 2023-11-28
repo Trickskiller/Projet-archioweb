@@ -6,7 +6,8 @@ import usersRouter from "./routes/users.js";
 import vehiculesRouter from "./routes/vehicules.js";
 import loginRouter from "./routes/login.js";
 import placesRouter from "./routes/places.js";
-import path from 'path'
+import reservationsRouter from "./routes/reservations.js";
+import path from "path";
 
 import mongoose from "mongoose";
 
@@ -20,8 +21,7 @@ app.use(cors());
 
 // Serve the apiDoc documentation.
 const __dirname = path.resolve();
-app.use('/apidoc', express.static(path.join(__dirname, 'docs')));
-
+app.use("/apidoc", express.static(path.join(__dirname, "docs")));
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -31,7 +31,9 @@ app.use("/", indexRouter); // indexRouter est le routeur pour la racine de l'API
 app.use("/users", usersRouter);
 app.use("/vehicules", vehiculesRouter);
 app.use("/places", placesRouter);
+app.use("/reservations", reservationsRouter);
 app.use("/login", loginRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
