@@ -57,7 +57,6 @@ router.put("/:userId", async (req, res) => {
     }
 
     res.status(201).send("Utilisateur modifié avec succès.");
-    
   } catch (error) {
     res
       .status(500)
@@ -70,35 +69,31 @@ router.delete("/:userId", async (req, res) => {
   try {
     const { firstName, lastName, userName, password } = req.body;
 
-    const deleteUser = await User.findByIdAndDelete (
+    const deleteUser = await User.findByIdAndDelete(
+      { _id: req.params.userId },
+      {
+        firstName: req.body.firstName,
 
-    { _id: req.params.userId },
-    {
-      firstName: req.body.firstName,
+        lastName: req.body.lastName,
 
-      lastName: req.body.lastName,
+        userName: req.body.userName,
 
-      userName: req.body.userName,
+        password: req.body.password,
+      },
+      { new: true }
+    );
 
-      password: req.body.password,
-    },
-    { new: true }
-);
+    console.log(deleteUser);
+    if (!deleteUser) {
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
 
-console.log (deleteUser);
-if (!deleteUser) {
-  return res.status(404).json({ error: "Utilisateur non trouvé" });
-}
-
-res.status(201).send("Utilisateur supprimé avec succès.");
-
-
-} catch (error) {
-res
-  .status(500)
-  .json({ error: "Erreur lors de la suppression de l'utilisateur" });
-}
+    res.status(201).send("Utilisateur supprimé avec succès.");
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression de l'utilisateur" });
+  }
 });
-
 
 export default router;

@@ -19,27 +19,25 @@ router.get("/", async (req, res) => {
       .json({ error: "Erreur lors de la récupération des vehicules" });
   }
 });
-
+// Route pour récupérer un véhicule par son ID
 router.post("/", authenticate, async (req, res) => {
   try {
-    const newVehicule = new Vehicule(req.body)
+    const newVehicule = new Vehicule(req.body);
 
-    console.log(newVehicule)
-    await newVehicule.save()
+    console.log(newVehicule);
+    await newVehicule.save();
     res.status(201).send("Véhicule enregistré avec succès.");
   } catch (error) {
-    res
-    .status(500)
-    .json({error: "Erreur de création de véhicule"})
+    res.status(500).json({ error: "Erreur de création de véhicule" });
   }
-})
+});
 
 // Route de mise à jour d'un véhicule par son ID, avec vérification du propriétaire
-router.put("/:vehiculeId", authenticate , async (req, res) => {
+router.put("/:vehiculeId", authenticate, async (req, res) => {
   try {
     const _id = req.params.vehiculeId;
     const updateData = req.body;
-    
+
     // Rechercher le véhicule par ID
     const vehicule = await Vehicule.findById(vehiculeId);
 
@@ -54,11 +52,19 @@ router.put("/:vehiculeId", authenticate , async (req, res) => {
     }
 
     // Mise à jour du véhicule
-    const updatedVehicule = await Vehicule.findByIdAndUpdate(vehiculeId, updateData, { new: true });
+    const updatedVehicule = await Vehicule.findByIdAndUpdate(
+      vehiculeId,
+      updateData,
+      { new: true }
+    );
 
-    res.status(200).json({ message: "Véhicule mis à jour avec succès", updatedVehicule });
+    res
+      .status(200)
+      .json({ message: "Véhicule mis à jour avec succès", updatedVehicule });
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la mise à jour du véhicule" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la mise à jour du véhicule" });
   }
 });
 
