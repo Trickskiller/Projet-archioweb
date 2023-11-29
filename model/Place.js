@@ -57,11 +57,7 @@ const placeSchema = new mongoose.Schema({
     required: true,
   },
   
-  reservationId:{
-    type: mongoose.ObjectId,
-    ref: 'Reservation',
-    required: true,
-  }
+  
 
 });
 

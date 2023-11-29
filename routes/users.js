@@ -12,12 +12,47 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
 
 // Route pour obtenir tous les utilisateurs "users"
 router.get("/", async (req, res) => {
+
   try {
-    const users = await User.find(); // N'exposez pas les mots de passe dans la réponse
-    res.send(users);
-  } catch (error) {
-    res.status(500).json({ error: "43634" });
-  }
+    // Récupérer les paramètres de pagination de la requête
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const usersWithPlaceCount = await User.aggregate([
+      {
+        $lookup: {
+          from: "places", // Assurez-vous que le nom de la collection est correct
+          localField: "_id",
+          foreignField: "userId",
+          as: "placesPosted"
+        }
+      },
+      {
+        $project: {
+          firstName: 1,
+          lastName: 1,
+          userName: 1,
+          placesCount: { $size: "$placesPosted" }
+        }
+      },
+      { $skip: skip },
+      { $limit: limit }
+    ]);
+
+    // Compter le nombre total d'utilisateurs (pour l'information de pagination)
+    const totalUsers = await User.countDocuments();
+
+    res.status(200).json({
+      total: totalUsers,
+      page,
+      pageSize: usersWithPlaceCount.length,
+      users: usersWithPlaceCount
+    });
+} catch (error) {
+  res.status(500).json({ error: "Erreur lors de la récupération des utilisateurs" });
+}
+
 });
 
 // Route pour obtenir un utilisateur par son ID

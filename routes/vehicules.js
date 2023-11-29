@@ -20,6 +20,25 @@ router.get("/", async (req, res) => {
   }
 });
 // Route pour récupérer un véhicule par son ID
+router.get("/:vehiculeId", async (req, res) => {
+  try {
+    const vehiculeId = req.params.vehiculeId;
+
+    // Rechercher le véhicule par son ID
+    const vehicule = await Vehicule.findById(vehiculeId);
+
+    // Vérifier si le véhicule a été trouvé
+    if (!vehicule) {
+      return res.status(404).json({ error: "Véhicule non trouvé" });
+    }
+
+    res.status(200).json(vehicule);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la récupération du véhicule" });
+  }
+});
+
+//route pour créer un véhicule
 router.post("/", authenticate, async (req, res) => {
   try {
     const newVehicule = new Vehicule(req.body);
