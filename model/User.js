@@ -47,12 +47,13 @@ const userSchema = new Schema({
 });
 
 userSchema.set("toJSON", {
-  transform: transformJsonUser
+  transform: transformJsonUser,
 });
 function transformJsonUser(doc, json, options) {
- // Remove the hashed password from the generated JSON.
- delete json.password;
- return json;
+  // Remove the hashed password and _v from the generated JSON.
+  delete json.password;
+  delete json.__v;
+  return json;
 }
 
 // Exportation du modèle User pour l'utiliser ailleurs dans l'application

@@ -31,6 +31,28 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+// Route pour créer un nouvel utilisateur
+router.post("/", async (req, res) => {
+  try {
+    const { firstName, lastName, userName, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      firstName,
+      lastName,
+      userName,
+      password: hashedPassword,
+    });
+
+    await newUser.save();
+    res.status(201).json(newUser);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la création de l'utilisateur" });
+  }
+});
+
 // Route de mise à jour d'un utilisateur par son ID
 router.put("/:userId", async (req, res) => {
   try {
@@ -84,7 +106,9 @@ router.delete("/:userId", authenticate, async (req, res) => {
 
     res.status(200).json({ message: "Utilisateur supprimé avec succès" });
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la suppression de l'utilisateur" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression de l'utilisateur" });
   }
 });
 
