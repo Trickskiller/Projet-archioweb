@@ -24,6 +24,31 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Route pour récupérer une réservation par son ID
+router.get("/:reservationId", async (req, res) => {
+  try {
+    const reservationId = req.params.reservationId;
+
+    // Rechercher la réservation par son ID
+    const reservation = await Reservation.findById(reservationId)
+      .populate('renterUserId', 'firstName lastName userName')
+      .populate('parkingId')
+      .populate({
+        path: 'vehiculeId',
+        select: 'registrationNumber'
+      });
+
+    // Vérifier si la réservation a été trouvée
+    if (!reservation) {
+      return res.status(404).json({ error: "Réservation non trouvée" });
+    }
+
+    res.status(200).json(reservation);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la récupération de la réservation" });
+  }
+});
+
 // Route pour créer une nouvelle réservation
 router.post("/", authenticate, async (req, res) => {
   try {
