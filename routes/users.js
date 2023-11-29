@@ -14,7 +14,9 @@ router.get("/", async (req, res) => {
     const users = await User.find(); // N'exposez pas les mots de passe dans la réponse
     res.send(users);
   } catch (error) {
-    res.status(500).json({ error: "43634" });
+    res
+      .status(500)
+      .json({ error: "impossible d'obtenir la liste des utilisateurs" });
   }
 });
 
@@ -27,7 +29,7 @@ router.get("/:userId", async (req, res) => {
     }
     res.json(user);
   } catch (error) {
-    res.status(500).json({ error: "23452" });
+    res.status(500).json({ error: "Impossible d'accéder aux utilisateurs" });
   }
 });
 
@@ -78,7 +80,11 @@ router.put("/:userId", async (req, res) => {
       return res.status(404).json({ error: "Utilisateur non trouvé" });
     }
 
-    res.status(201).send("Utilisateur modifié avec succès.");
+    // Envoi de la réponse avec le message personnalisé et l'utilisateur mis à jour
+    res.status(200).json({
+      message: "Utilisateur mis à jour avec succès",
+      user: updatedUser,
+    });
   } catch (error) {
     res
       .status(500)

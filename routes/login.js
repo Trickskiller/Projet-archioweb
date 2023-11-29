@@ -3,27 +3,26 @@ import bcrypt from "bcrypt";
 import express from "express";
 import jwt from "jsonwebtoken";
 
-
 const router = express.Router();
-const secretKey = process.env.SECRET_KEY ;
-
-
+const secretKey = process.env.SECRET_KEY;
 
 // Route pour enregistrer un nouvel utilisateur
 router.post("/signup", async (req, res) => {
   try {
     // Vérifiez si l'utilisateur existe déjà
     let user = await User.findOne({ username: req.body.userName });
-    console.log(user)
+    console.log(user);
     if (user) {
-      return res.status(409).send("Un utilisateur avec cet username existe déjà.");
+      return res
+        .status(409)
+        .send("Un utilisateur avec cet username existe déjà.");
     }
 
     // Hash du mot de passe
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     // Création de l'utilisateur
-    user = new User(req.body)
+    user = new User(req.body);
 
     user.password = hashedPassword;
 
@@ -35,18 +34,16 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-
-
 // Route pour l'authentification d'un utilisateur
 router.post("/connect", async (req, res) => {
   try {
     const user = await User.findOne({ userName: req.body.userName });
     if (!user) {
-      return res.status(401).send("Username  incorrect.");
+      return res.status(401).send("Username incorrect.");
     }
-    console.log(user)
-    console.log(req.body.password)
-    console.log(user.password)
+    console.log(user);
+    console.log(req.body.password);
+    console.log(user.password);
     const valid = await bcrypt.compare(req.body.password, user.password);
     if (!valid) {
       return res.status(401).send("mot de passe incorrect.");
