@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 import { User } from "../model/User.js";
 import authenticate from "../auth.js";
 
+
+
 const router = express.Router();
 const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser une clé secrète plus complexe et la stocker en sécurité.
 
