@@ -24,52 +24,16 @@ router.get("/", async (req, res) => {
     }
   });
 
-  router.get("/place/:placeId/reservations", authenticate, async (req, res) => {
-    try {
-      const placeId = req.params.placeId;
-      const userId = req.currentUserId; // ID de l'utilisateur authentifié
-  
-      // Rechercher la place pour vérifier le propriétaire
-      const place = await Place.findById(placeId);
-      if (!place) {
-        return res.status(404).json({ error: "Place non trouvée" });
-      }
-  
-      // Vérifier si l'utilisateur authentifié est le propriétaire de la place
-      if (place.userId.toString() !== userId.toString()) {
-        return res.status(403).json({ error: "Accès non autorisé" });
-      }
-  
-      // Rechercher toutes les réservations pour la place spécifiée
-      const reservations = await Reservation.find({ parkingId: placeId })
-        .populate('renterUserId', 'firstName lastName userName');
-  
-      if (!reservations || reservations.length === 0) {
-        return res.status(404).json({ message: "Aucune réservation trouvée pour cette place" });
-      }
-  
-      const renters = reservations.map(reservation => ({
-        userId: reservation.renterUserId._id,
-        userName: reservation.renterUserId.userName,
-        startDate: reservation.startDate,
-        endDate: reservation.endDate
-      }));
-  
-      res.status(200).json({ reservations: renters });
-    } catch (error) {
-      res.status(500).json({ error: "Erreur lors de la récupération des réservations" });
-    }
-  });
-  
+
 
 // Route pour créer une nouvelle réservation
 router.post("/", authenticate, async (req, res) => {
   try {
     // Extraire les informations nécessaires de la requête
-    const { parkingId, startDate, endDate } = req.body;
+    const { parkingId, startDate, endDate, vehiculeId } = req.body;
 
     // Vérifier la validité des données (ajoutez d'autres validations au besoin)
-    if (!parkingId || !startDate || !endDate) {
+    if (!parkingId || !startDate || !endDate || !vehiculeId) {
       return res.status(400).send("Paramètres de réservation invalides.");
     }
 
@@ -96,11 +60,19 @@ router.post("/", authenticate, async (req, res) => {
     }
 
 
+     // Vérifier si le véhicule appartient à l'utilisateur authentifié
+     const vehicule = await Vehicule.findById(vehiculeId);
+     if (!vehicule || vehicule.userId.toString() !== req.currentUserId) {
+       return res.status(403).send("Véhicule non autorisé ou inexistant.");
+     }
+
+     
     // Créer une nouvelle réservation avec les données de la requête
     const newReservation = new Reservation({
       parkingId,
       renterUserId: req.currentUserId,
       ownerUserId: placeDetails.userId, // Utiliser l'ID du propriétaire de la place
+      vehiculeId,
       startDate,
       endDate,
       status: "In process",

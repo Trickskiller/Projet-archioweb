@@ -29,6 +29,13 @@ const reservationSchema = new Schema({
     type: mongoose.ObjectId,
     required: true,
   },
+
+  vehiculeId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Vehicule',
+    required: true,
+  },
+
   startDate: {
     type: Date,
     required: true,
