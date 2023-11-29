@@ -8,23 +8,21 @@ import { broadcastMessage } from "../ws.js";
 import { User } from "../model/User.js";
 import { Vehicule } from "../model/Vehicule.js";
 import { Reservation } from "../model/Reservation.js";
-import schedule from 'node-schedule';
+import schedule from "node-schedule";
 
 const router = express.Router();
 
 // Route pour récupérer toutes les résa
 router.get("/", async (req, res) => {
-    try {
-      const reservations = await Reservation.find();
-      res.send(reservations);
-    } catch (error) {
-      res
-        .status(500)
-        .json({ error: "Erreur lors de la récupération des réservations" });
-    }
-  });
-
-
+  try {
+    const reservations = await Reservation.find();
+    res.send(reservations);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la récupération des réservations" });
+  }
+});
 
 // Route pour créer une nouvelle réservation
 router.post("/", authenticate, async (req, res) => {
@@ -48,25 +46,25 @@ router.post("/", authenticate, async (req, res) => {
         .send("La place de parking spécifiée n'existe pas.");
     }
 
-     // Vérifier s'il existe déjà une réservation pour la même place aux mêmes dates
-     const existingReservation = await Reservation.findOne({
+    // Vérifier s'il existe déjà une réservation pour la même place aux mêmes dates
+    const existingReservation = await Reservation.findOne({
       parkingId: parkingId,
       startDate: { $lte: new Date(endDate) },
-      endDate: { $gte: new Date(startDate) }
+      endDate: { $gte: new Date(startDate) },
     });
 
     if (existingReservation) {
-      return res.status(400).send("Une réservation existe déjà pour ces dates.");
+      return res
+        .status(400)
+        .send("Une réservation existe déjà pour ces dates.");
     }
 
+    // Vérifier si le véhicule appartient à l'utilisateur authentifié
+    const vehicule = await Vehicule.findById(vehiculeId);
+    if (!vehicule || vehicule.userId.toString() !== req.currentUserId) {
+      return res.status(403).send("Véhicule non autorisé ou inexistant.");
+    }
 
-     // Vérifier si le véhicule appartient à l'utilisateur authentifié
-     const vehicule = await Vehicule.findById(vehiculeId);
-     if (!vehicule || vehicule.userId.toString() !== req.currentUserId) {
-       return res.status(403).send("Véhicule non autorisé ou inexistant.");
-     }
-
-     
     // Créer une nouvelle réservation avec les données de la requête
     const newReservation = new Reservation({
       parkingId,
@@ -97,7 +95,7 @@ router.post("/", authenticate, async (req, res) => {
     broadcastMessage({
       update: `Nouvelle réservation sur votre place par ${user.userName}`,
       newReservation,
-      owner: ownerUser.userName
+      owner: ownerUser.userName,
     });
   } catch (error) {
     console.error("Erreur de création de réservation:", error);
@@ -106,15 +104,17 @@ router.post("/", authenticate, async (req, res) => {
       .send("Erreur interne du serveur lors de la création de la réservation.");
   }
 
-  const notificationTime = new Date(newReservation.endDate.getTime() - 30 * 60000); // 30 minutes avant la fin
+  // broadcast qui averti le bailleur 30 avant que sa résérvation se termine
+  //   const notificationTime = new Date(
+  //     newReservation.endDate.getTime() - 30 * 60000
+  //   ); // 30 minutes avant la fin
 
-schedule.scheduleJob(notificationTime, function() {
-  broadcastMessage({
-    update: `Votre réservation se termine dans 30 minutes.`,
-    reservation: newReservation
-  });
-});
-
+  //   schedule.scheduleJob(notificationTime, function () {
+  //     broadcastMessage({
+  //       update: `Votre réservation se termine dans 30 minutes.`,
+  //       reservation: newReservation,
+  //     });
+  //   });
 });
 
 router.put("/:reservationId", authenticate, async (req, res) => {
@@ -138,9 +138,14 @@ router.put("/:reservationId", authenticate, async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({ message: "Réservation mise à jour avec succès", updatedReservation });
+    res.status(200).json({
+      message: "Réservation mise à jour avec succès",
+      updatedReservation,
+    });
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la mise à jour de la réservation" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la mise à jour de la réservation" });
   }
 });
 
@@ -162,10 +167,10 @@ router.delete("/:reservationId", authenticate, async (req, res) => {
 
     res.status(200).json({ message: "Réservation supprimée avec succès" });
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la suppression de la réservation" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression de la réservation" });
   }
 });
-
-
 
 export default router;

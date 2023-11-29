@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 
 // Définition du schéma Véhicule
 const vehiculeSchema = new mongoose.Schema({
+  id:{
+    type : mongoose.ObjectId
+  },
   type: {
     type: String,
     required: true,
@@ -21,13 +24,15 @@ const vehiculeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Relation avec le modèle User pour savoir à qui appartient le véhicule
+  // Relation avec le modèle User pour savoir à qui appartient le véhicule -> propriétaire
   userId: {
     type: mongoose.ObjectId,
-    ref: "User",
+    //ref: "User",
     required: true,
   },
 });
 
 // Exportation du modèle Véhicule pour l'utiliser ailleurs dans l'application
 export const Vehicule = model("Vehicule", vehiculeSchema);
+
+  

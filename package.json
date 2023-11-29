@@ -7,7 +7,7 @@
     "dev": "nodemon",
     "start": "node ./bin/start",
     "apidoc": "apidoc -i routes -o docs",
-    "test": "cross-env DATABASE_URL=mongodb://127.0.0.1:27017/ParkingLocationApp-test node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "cross-env DATABASE_URL=mongodb://127.0.0.1:27017/lostNFound-test node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -37,6 +37,8 @@
     "supertest": "^6.3.3"
   },
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended/all"]
+    "setupFilesAfterEnv": [
+      "jest-extended/all"
+    ]
   }
 }

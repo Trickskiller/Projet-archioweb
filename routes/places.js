@@ -12,7 +12,6 @@ import { Reservation } from "../model/Reservation.js";
 const router = express.Router();
 
 // Route pour récupérer tous les vehicules
-
 router.get("/", async (req, res) => {
   try {
     const places = await Place.find({});
@@ -23,6 +22,9 @@ router.get("/", async (req, res) => {
       .json({ error: "Erreur lors de la récupération des places" });
   }
 });
+
+//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places libres par exemple.
+
 
 router.get("/:placeId", async (req, res) => {
   try {
@@ -99,7 +101,7 @@ router.put("/:placeId", authenticate, async (req, res) => {
 router.delete("/:placeId", authenticate, async (req, res) => {
   try {
     const placeId = req.params.placeId;
-    const userId = req.currentUserId; // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+    const userId = req.currentUserId;
 
     // Rechercher la place par ID
     const place = await Place.findById(placeId);
@@ -109,8 +111,11 @@ router.delete("/:placeId", authenticate, async (req, res) => {
       return res.status(404).json({ error: "Place non trouvée" });
     }
 
-    // Vérifier si l'utilisateur authentifié est le propriétaire de la place
-    if (place.userId.toString() !== userId.toString()) {
+    // Rechercher l'utilisateur par ID
+    const user = await User.findById(userId);
+
+    // Vérifier si l'utilisateur authentifié est le propriétaire ou admin de la place 
+    if (place.userId.toString() !== userId.toString() && !user.admin) { 
       return res.status(403).json({ error: "Action non autorisée" });
     }
 
@@ -119,9 +124,7 @@ router.delete("/:placeId", authenticate, async (req, res) => {
 
     res.status(200).json({ message: "Place supprimée avec succès" });
   } catch (error) {
-    res
-      .status(500)
-      .json({ error: "Erreur lors de la suppression de la place" });
+    res.status(500).json({ error: "Erreur lors de la suppression de la place" });
   }
 });
 
