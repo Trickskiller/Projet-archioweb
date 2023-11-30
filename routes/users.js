@@ -10,7 +10,7 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
 
 
 /**
- * @api {get} /users Request a list of users
+ * @api {get} /users Get a list of users
  * @apiName GetUsers
  * @apiGroup User
  * @apiVersion 1.0.0
@@ -49,7 +49,6 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
  *             "_id": "637a42301497883f834a5caa",
  *             "placesCount": 2
  *         },
- *         // ... other users
  *       ]
  *     }
  * 
@@ -112,7 +111,7 @@ router.get("/", async (req, res) => {
 
 
 /**
- * @api {get} /users/:userId Request a user by ID
+ * @api {get} /users/:userId Get a user by ID
  * @apiName GetUserById
  * @apiGroup User
  * 
