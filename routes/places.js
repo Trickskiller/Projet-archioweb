@@ -75,7 +75,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places libres par exemple.
+//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places par exemple selon son type
 
 /**
  * @api {get} /places/:placeId Get place by ID
@@ -410,6 +410,8 @@ router.delete("/:placeId", authenticate, async (req, res) => {
  * @api {get} /places/:placeId/reservations Get reservations for a place
  * @apiName GetPlaceReservations
  * @apiGroup Place
+ * @apiVersion 1.0.0
+ * @apiPermission user
  *
  * @apiDescription Get all reservations associated with a specific place.
  *
@@ -417,27 +419,47 @@ router.delete("/:placeId", authenticate, async (req, res) => {
  *
  * @apiParam {String} placeId Unique ID of the place.
  *
- * @apiSuccess {Object[]} reservations List of reservations for the place.
- * @apiSuccess {String} reservations.userId ID of the renter user.
- * @apiSuccess {String} reservations.userName Username of the renter user.
- * @apiSuccess {Date} reservations.startDate Start date of the reservation.
- * @apiSuccess {Date} reservations.endDate End date of the reservation.
+ * @apiSuccess {Number} total Total number of reservations for the place.
+ * @apiSuccess {Number} page Current page number.
+ * @apiSuccess {Number} pageSize Number of reservations in the current page.
+ * @apiSuccess {Object[]} data List of reservations for the place.
+ * @apiSuccess {String} data._id Reservation ID.
+ * @apiSuccess {Object} data.renterUserId Renter user details.
+ * @apiSuccess {String} data.renterUserId._id Renter user ID.
+ * @apiSuccess {String} data.renterUserId.firstName Renter user's first name.
+ * @apiSuccess {String} data.renterUserId.lastName Renter user's last name.
+ * @apiSuccess {String} data.renterUserId.userName Renter user's username.
+ * @apiSuccess {Object} data.vehiculeId Vehicule details.
+ * @apiSuccess {String} data.vehiculeId.registrationNumber Vehicule registration number.
+ * @apiSuccess {Date} data.startDate Start date of the reservation.
+ * @apiSuccess {Date} data.endDate End date of the reservation.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "reservations": [
- *             {
- *                 "userId": "637a42301497883f834a5caa",
- *                 "userName": "jeando",
- *                 "startDate": "2022-11-20T15:05:20.254Z",
- *                 "endDate": "2022-11-21T15:05:20.254Z"
- *             }
- *         ]
+ *       "total": 25,
+ *       "page": 1,
+ *       "pageSize": 10,
+ *       "data": [
+ *         {
+ *           "_id": "5f50c31f1234567890123456",
+ *           "renterUserId": {
+ *             "_id": "5f50c31f1234567890123456",
+ *             "firstName": "Jean",
+ *             "lastName": "Doe",
+ *             "userName": "jeando"
+ *           },
+ *           "vehiculeId": {
+ *             "registrationNumber": "AB-123-CD"
+ *           },
+ *           "startDate": "2023-01-01T00:00:00.000Z",
+ *           "endDate": "2023-01-07T00:00:00.000Z"
+ *         }
+ *         // ... other reservations
+ *       ]
  *     }
  *
  * @apiError (Error 404) {Object} error Error object indicating the place was not found.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 Not Found
  *     {
@@ -445,7 +467,6 @@ router.delete("/:placeId", authenticate, async (req, res) => {
  *     }
  *
  * @apiError (Error 403) {Object} error Error object indicating unauthorized access.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 403 Forbidden
  *     {
@@ -453,7 +474,6 @@ router.delete("/:placeId", authenticate, async (req, res) => {
  *     }
  *
  * @apiError (Error 500) {Object} error Error object with a message.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 Internal Server Error
  *     {
@@ -490,7 +510,6 @@ router.get("/:placeId/reservations", authenticate, async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    // Optionnel: Compter le nombre total de réservations pour cette place
     const totalReservations = await Reservation.countDocuments({ parkingId: placeId });
 
     res.status(200).json({

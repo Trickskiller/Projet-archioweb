@@ -230,18 +230,29 @@ router.post("/", authenticate, async (req, res) => {
       .send("Erreur interne du serveur lors de la création de la réservation.");
   }
 
-  // broadcast qui averti le bailleur 30 avant que sa résérvation se termine
-  //   const notificationTime = new Date(
-  //     newReservation.endDate.getTime() - 30 * 60000
-  //   ); // 30 minutes avant la fin
-
-  //   schedule.scheduleJob(notificationTime, function () {
-  //     broadcastMessage({
-  //       update: `Votre réservation se termine dans 30 minutes.`,
-  //       reservation: newReservation,
-  //     });
-  //   });
+ 
 });
+
+/**
+ * @api {put} /reservations/:reservationId Update a reservation
+ * @apiName UpdateReservation
+ * @apiGroup Reservations
+ *
+ * @apiHeader {String} Authorization User's access token.
+ *
+ * @apiParam {String} reservationId Reservation ID.
+ * @apiParam {String} [parkingId] Parking ID for the reservation.
+ * @apiParam {Date} [startDate] Reservation start date.
+ * @apiParam {Date} [endDate] Reservation end date.
+ * @apiParam {String} [vehiculeId] Vehicule ID for the reservation.
+ * @apiParam {String} [status] Reservation status.
+ *
+ * @apiSuccess {String} message Success message.
+ * @apiSuccess {Object} updatedReservation Updated reservation details.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 
 router.put("/:reservationId", authenticate, async (req, res) => {
   try {
@@ -274,6 +285,22 @@ router.put("/:reservationId", authenticate, async (req, res) => {
       .json({ error: "Erreur lors de la mise à jour de la réservation" });
   }
 });
+
+
+/**
+ * @api {delete} /reservations/:reservationId Delete a reservation
+ * @apiName DeleteReservation
+ * @apiGroup Reservations
+ *
+ * @apiHeader {String} Authorization User's access token.
+ *
+ * @apiParam {String} reservationId Reservation ID.
+ *
+ * @apiSuccess {String} message Success message.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 
 router.delete("/:reservationId", authenticate, async (req, res) => {
   try {

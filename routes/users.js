@@ -25,7 +25,7 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
  * @apiSuccess {String} users.userName Username of the users.
  * @apiSuccess {String} users.creationDate Creation date of the users.
  * @apiSuccess {String} users._id Id of the users.
- * @apiSuccess {Number} users.parkingSpotsPosted Number of parking spots posted by the user.
+ * @apiSuccess {Number} users.placePosted Number of parking spots posted by the user.
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
@@ -37,7 +37,7 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
  *             "userName": "johndoe",
  *             "creationDate": "2022-11-20T15:05:20.254Z",
  *             "_id": "637a42301497883f834a5caa",
- *             "parkingSpotsPosted": 0
+ *             "PlacePosted": 0
  *         }
  *     ]
  * 
