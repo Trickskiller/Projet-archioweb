@@ -7,7 +7,7 @@ const router = express.Router();
 const secretKey = process.env.SECRET_KEY;
 
 /**
- * @api {post} /auth/signup Register a new user
+ * @api {post} /signup Register a new user
  * @apiName SignUp
  * @apiGroup Authentication
  *
@@ -49,7 +49,7 @@ router.post("/signup", async (req, res) => {
 
 
 /**
- * @api {post} /auth/connect Authenticate a user
+ * @api {post} /connect Authenticate a user
  * @apiName SignIn
  * @apiGroup Authentication
  *
