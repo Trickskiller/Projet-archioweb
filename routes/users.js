@@ -49,23 +49,6 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
  *         "error": "Error fetching users"
  *     }
  */
-router.get("/", async (req, res) => {
-  try {
-    const pageSize = req.query.pageSize || 10;
-    const page = req.query.page || 1;
-
-    // Fetch users from the database (adjust this based on your actual database logic)
-    const users = await User.find({})
-      .limit(pageSize)
-      .skip((page - 1) * pageSize);
-
-    // Send the response
-    res.status(200).json(users);
-  } catch (error) {
-    // Handle errors
-    res.status(500).json({ error: "Error fetching users" });  
-  }
-});
 
 
 // Route pour obtenir tous les utilisateurs "users"
@@ -99,6 +82,9 @@ router.get("/", async (req, res) => {
 
     // Compter le nombre total d'utilisateurs (pour l'information de pagination)
     const totalUsers = await User.countDocuments();
+
+    console.log(usersWithPlaceCount); // Afficher les résultats de l'agrégation
+    console.log({ total: totalUsers, page, pageSize: usersWithPlaceCount.length, users: usersWithPlaceCount });
 
     res.status(200).json({
       total: totalUsers,
