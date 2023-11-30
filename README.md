@@ -13,6 +13,8 @@ Le lien de notre app : https://parking-app-jc1u.onrender.com
 ```markdown
 Users:
 
+- userId
+- admin (booleen)
 - firstName
 - lastName
 - userName
@@ -20,40 +22,50 @@ Users:
 
 Place de parc:
 
+- placeId
 - description
 - type
 - geolocation
 - picture
-- date de disponibilité (jour, mois, année, heure, minute)
+- userId
+
 
 Véhicule :
 
+- vehiculeId
 - type
-- numéro d'immatriculation
-- couleur
-- marque
+- registrationNumber
+- color
+- brand
+- userId
+
+Réservation :
+- reservationId
+- parkingId
+- renterUserId
+- ownerUserId
+- startDate
+- endDate
+- status
 ```
 
 **Paginated list :**
 
-1. Liste toutes les places disponibles
+1. Listes des users 
 2. Liste des personnes qui ont réservé la place
 
 **Filtres :**
 
 - Les places
-  - Géolocalisation - trouver toutes les places dans un rayon
-  - type de place
-  - date
-  - heure
+  - type de places ("Parking couvert", "Parking ouvert", "Garage", "Autre")
 
 **Aggregated data :**
 
-- Number of réservation for a parking à venir
+- Number de places posted par un user
 
 **Real Time :**
 
 1. L’utilisateur est notifié quand lorsqu’il y a un nouvelle réservation sur sa place.
-2. L’utiliseur est notifé 30 min avant la fin de la réservation de parking (pour qu’il se souvienne qu’il doit partir).
+2. L’utiliseur est notifé lorsque de nouvelles places sont posté sur l'API
 
 Dea, Andy, Lara
