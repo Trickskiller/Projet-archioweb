@@ -11,6 +11,10 @@ import path from "path";
 import fs from "fs";
 import yaml from "js-yaml";
 import swaggerUi from "swagger-ui-express";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import mongoose from "mongoose";
 
@@ -25,12 +29,12 @@ app.use(cors());
 
 
 
-// Parse the OpenAPI document.
+/* // Parse the OpenAPI document.
 const openApiDocument = yaml.load(fs.readFileSync("./openapi.yml"));
 // Serve the Swagger UI documentation.
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 // Serve the apiDoc documentation.
-const __dirname = path.resolve();
+const __dirname = path.resolve(); */
 app.use("/apidoc", express.static(path.join(__dirname, "docs")));
 
 app.use(logger("dev"));
