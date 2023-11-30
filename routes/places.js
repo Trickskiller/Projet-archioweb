@@ -204,7 +204,7 @@ router.post("/", authenticate, async (req, res) => {
 
     const newPlace = new Place({
       ...req.body,
-      userId: req.currentUserId, // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+      userId: req.currentUserId, // Ajout de l'ID de l'utilisateur courant
     });
 
     await newPlace.save();
@@ -223,7 +223,7 @@ router.post("/", authenticate, async (req, res) => {
 
     res.status(201).json({ message: "Place créée avec succès", newPlace });
   } catch (error) {
-    console.error("Erreur lors de la création de la place:", error); // Log d'erreur plus détaillé
+    console.error("Erreur lors de la création de la place:", error); 
     res.status(500).json({ error: error.message });
   }
 });
@@ -300,7 +300,7 @@ router.put("/:placeId", authenticate, async (req, res) => {
   try {
     const placeId = req.params.placeId;
     const updateData = req.body;
-    const userId = req.currentUserId; // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+    const userId = req.currentUserId; 
 
     // Rechercher la place par ID
     const place = await Place.findById(placeId);
@@ -525,6 +525,5 @@ router.get("/:placeId/reservations", authenticate, async (req, res) => {
   }
 });
 
-// module.exports = router;
 
 export default router;

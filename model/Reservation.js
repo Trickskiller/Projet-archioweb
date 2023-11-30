@@ -1,12 +1,3 @@
-//Reservation :
-// - reservationId
-// - parkingId
-// - renterUserId
-// - ownerUserId
-// - startDate
-// - endDate
-// - status
-
 import mongoose, { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 
@@ -44,11 +35,7 @@ const reservationSchema = new Schema({
     type: Date,
     required: true,
   }
-//   status: {
-//     type: String,
-//     enum: ["In process", "Confirmed", "Cancelled", "Finished"],
-//     default: "In process",
-//   },
+
 });
 
 // Exportation du modèle Reservation pour l'utiliser ailleurs dans l'application

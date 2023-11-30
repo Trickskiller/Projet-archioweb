@@ -172,7 +172,7 @@ router.put("/:vehiculeId", authenticate, async (req, res) => {
 router.delete("/:vehiculeId", authenticate, async (req, res) => {
   try {
     const vehiculeId = req.params.vehiculeId;
-    const userId = req.currentUserId; // Assurez-vous que l'ID de l'utilisateur actuel est attaché à la requête
+    const userId = req.currentUserId; 
 
     // Rechercher le véhicule par ID
     const vehicule = await Vehicule.findById(vehiculeId);
@@ -196,6 +196,5 @@ router.delete("/:vehiculeId", authenticate, async (req, res) => {
   }
 });
 
-// module.exports = router;
 
 export default router;

@@ -62,7 +62,7 @@ router.get("/", async (req, res) => {
     const usersWithPlaceCount = await User.aggregate([
       {
         $lookup: {
-          from: "places", // Assurez-vous que le nom de la collection est correct
+          from: "places", 
           localField: "_id",
           foreignField: "userId",
           as: "placesPosted",
@@ -149,7 +149,7 @@ router.get("/", async (req, res) => {
 // Route pour obtenir un utilisateur par son ID
 router.get("/:userId", async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId, "-password"); // N'exposez pas le mot de passe
+    const user = await User.findById(req.params.userId, "-password"); 
     if (!user) {
       return res.status(404).json({ error: "Utilisateur non trouvé" });
     }
@@ -279,7 +279,6 @@ router.put("/:userId", async (req, res) => {
   try {
     const { firstName, lastName, userName, password } = req.body;
 
-    //const user = User.findOne({_id:req.params.userId});
 
     const updatedUser = await User.findByIdAndUpdate(
       { _id: req.params.userId },
@@ -358,7 +357,7 @@ router.put("/:userId", async (req, res) => {
 router.delete("/:userId", authenticate, async (req, res) => {
   try {
     const userId = req.params.userId;
-    const authUserId = req.currentUserId; // Assurez-vous que l'ID de l'utilisateur authentifié est attaché à la requête
+    const authUserId = req.currentUserId; 
 
     // Vérifier si l'utilisateur authentifié tente de supprimer son propre compte
     if (userId !== authUserId) {

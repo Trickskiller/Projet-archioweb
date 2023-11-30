@@ -9,7 +9,7 @@ const vehiculeSchema = new mongoose.Schema({
   type: {
     type: String,
     required: true,
-    enum: ["Voiture", "Moto", "Vélo", "Autre"], // Vous pouvez ajouter ou modifier ces types selon vos besoins
+    enum: ["Voiture", "Moto", "Vélo", "Autre"], 
   },
   registrationNumber: {
     type: String,
