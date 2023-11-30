@@ -1,8 +1,6 @@
+// config.js
+const jwtSecret = process.env.SECRET_KEY || "changeme";
 
-module.exports = {
-    secret: 'votre_secret_jwt',
-    expiresIn: '1h', // Durée de validité du token
-  };
+// Vous pouvez ajouter d'autres configurations ici si nécessaire
 
-
-  
+export { jwtSecret };

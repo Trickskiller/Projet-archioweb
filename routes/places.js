@@ -56,8 +56,18 @@ const router = express.Router();
 // Route pour récupérer toutes les places
 router.get("/", async (req, res) => {
   try {
-    const places = await Place.find({});
-    res.send(places);
+    // Récupérer le paramètre de requête 'type', s'il existe
+    const { type } = req.query;
+    let query = {};
+
+    // Si le paramètre 'type' est fourni, l'utiliser pour filtrer les résultats
+    if (type) {
+      query.type = type;
+    }
+
+    // Recherche des places avec le filtre appliqué
+    const places = await Place.find(query);
+    res.status(200).json(places);
   } catch (error) {
     res
       .status(500)
@@ -198,6 +208,19 @@ router.post("/", authenticate, async (req, res) => {
     });
 
     await newPlace.save();
+
+    broadcastMessage({
+      type: 'new-place-available',
+      data: {
+        id: newPlace._id,
+        description: newPlace.description,
+        geolocation: newPlace.geolocation,
+        type: newPlace.type,
+        picture: newPlace.picture,
+
+      }
+    });
+
     res.status(201).json({ message: "Place créée avec succès", newPlace });
   } catch (error) {
     console.error("Erreur lors de la création de la place:", error); // Log d'erreur plus détaillé
@@ -444,36 +467,38 @@ router.get("/:placeId/reservations", authenticate, async (req, res) => {
     const placeId = req.params.placeId;
     const userId = req.currentUserId; // ID de l'utilisateur authentifié
 
-    // Rechercher la place pour vérifier le propriétaire
+    // Rechercher la place pour vérifier le propriétaire ou si l'utilisateur est admin
     const place = await Place.findById(placeId);
+    const user = await User.findById(userId);
     if (!place) {
       return res.status(404).json({ error: "Place non trouvée" });
     }
 
-    // Vérifier si l'utilisateur authentifié est le propriétaire de la place
-    if (place.userId.toString() !== userId.toString()) {
+    if ((place.userId.toString() !== userId.toString()) && !user.admin) {
       return res.status(403).json({ error: "Accès non autorisé" });
     }
 
-    // Rechercher toutes les réservations pour la place spécifiée
-    const reservations = await Reservation.find({
-      parkingId: placeId,
-    }).populate("renterUserId", "firstName lastName userName");
+    // Récupérer les paramètres de pagination
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-    if (!reservations || reservations.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Aucune réservation trouvée pour cette place" });
-    }
+    // Rechercher les réservations avec pagination
+    const reservations = await Reservation.find({ parkingId: placeId })
+      .populate("renterUserId", "firstName lastName userName")
+      .populate("vehiculeId", "registrationNumber")
+      .skip(skip)
+      .limit(limit);
 
-    const renters = reservations.map((reservation) => ({
-      userId: reservation.renterUserId._id,
-      userName: reservation.renterUserId.userName,
-      startDate: reservation.startDate,
-      endDate: reservation.endDate,
-    }));
+    // Optionnel: Compter le nombre total de réservations pour cette place
+    const totalReservations = await Reservation.countDocuments({ parkingId: placeId });
 
-    res.status(200).json({ reservations: renters });
+    res.status(200).json({
+      total: totalReservations,
+      page,
+      pageSize: reservations.length,
+      data: reservations
+    });
   } catch (error) {
     res
       .status(500)
