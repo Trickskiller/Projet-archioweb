@@ -5,10 +5,68 @@ import jwt from "jsonwebtoken";
 import { User } from "../model/User.js";
 import authenticate from "../auth.js";
 
-
-
 const router = express.Router();
 const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser une clé secrète plus complexe et la stocker en sécurité.
+
+/**
+ * @api {get} /users Request a list of users
+ * @apiName GetUsers
+ * @apiGroup User
+ * 
+ * @apiDescription Retrieve a paginated list of users.
+ * 
+ * @apiParam {Number} [pageSize=10] The number of users to return per page.
+ * @apiParam {Number} [page=1] The page number to retrieve.
+ * 
+ * @apiSuccess {Object[]} users List of users.
+ * @apiSuccess {Boolean} users.admin Role of the users.
+ * @apiSuccess {String} users.firstName Firstname of the users.
+ * @apiSuccess {String} users.lastName Lastname of the users.
+ * @apiSuccess {String} users.userName Username of the users.
+ * @apiSuccess {String} users.creationDate Creation date of the users.
+ * @apiSuccess {String} users._id Id of the users.
+ * @apiSuccess {Number} users.parkingSpotsPosted Number of parking spots posted by the user.
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     [
+ *         {
+ *             "admin": false,
+ *             "firstName": "John",
+ *             "lastName": "Doe",
+ *             "userName": "johndoe",
+ *             "creationDate": "2022-11-20T15:05:20.254Z",
+ *             "_id": "637a42301497883f834a5caa",
+ *             "parkingSpotsPosted": 0
+ *         }
+ *     ]
+ * 
+ * @apiError (Error 500) {Object} error Error object with a code.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *         "error": "Error fetching users"
+ *     }
+ */
+router.get("/", async (req, res) => {
+  try {
+    const pageSize = req.query.pageSize || 10;
+    const page = req.query.page || 1;
+
+    // Fetch users from the database (adjust this based on your actual database logic)
+    const users = await User.find({})
+      .limit(pageSize)
+      .skip((page - 1) * pageSize);
+
+    // Send the response
+    res.status(200).json(users);
+  } catch (error) {
+    // Handle errors
+    res.status(500).json({ error: "Error fetching users" });  
+  }
+});
+
 
 // Route pour obtenir tous les utilisateurs "users"
 router.get("/", async (req, res) => {
@@ -19,6 +77,53 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "43634" });
   }
 });
+
+
+/**
+ * @api {get} /users/:userId Request a user by ID
+ * @apiName GetUserById
+ * @apiGroup User
+ * 
+ * @apiDescription Retrieve a user by their unique ID.
+ * 
+ * @apiParam {String} userId Unique ID of the user.
+ * 
+ * @apiSuccess {Boolean} admin Role of the user.
+ * @apiSuccess {String} firstName Firstname of the user.
+ * @apiSuccess {String} lastName Lastname of the user.
+ * @apiSuccess {String} userName Username of the user.
+ * @apiSuccess {String} creationDate Creation date of the user.
+ * @apiSuccess {String} _id Unique ID of the user.
+ * @apiSuccess {Number} parkingSpotsPosted Number of parking spots posted by the user.
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "admin": false,
+ *         "firstName": "John",
+ *         "lastName": "Doe",
+ *         "userName": "johndoe",
+ *         "creationDate": "2022-11-20T15:05:20.254Z",
+ *         "_id": "637a42301497883f834a5caa",
+ *         "parkingSpotsPosted": 0
+ *     }
+ * 
+ * @apiError (Error 404) {Object} error Error object indicating the user was not found.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *         "error": "Utilisateur non trouvé"
+ *     }
+ * 
+ * @apiError (Error 500) {Object} error Error object with a code.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *         "error": "23452"
+ *     }
+ */
 
 // Route pour obtenir un utilisateur par son ID
 router.get("/:userId", async (req, res) => {
@@ -32,6 +137,48 @@ router.get("/:userId", async (req, res) => {
     res.status(500).json({ error: "23452" });
   }
 });
+
+
+/**
+ * @api {post} /users Create a new user
+ * @apiName CreateUser
+ * @apiGroup User
+ * 
+ * @apiDescription Create a new user with the provided information.
+ * 
+ * @apiParam {String} firstName Firstname of the user.
+ * @apiParam {String} lastName Lastname of the user.
+ * @apiParam {String} userName Username of the user.
+ * @apiParam {String} password Password of the user.
+ * 
+ * @apiSuccess {Boolean} admin Role of the created user.
+ * @apiSuccess {String} firstName Firstname of the created user.
+ * @apiSuccess {String} lastName Lastname of the created user.
+ * @apiSuccess {String} userName Username of the created user.
+ * @apiSuccess {String} creationDate Creation date of the created user.
+ * @apiSuccess {String} _id Unique ID of the created user.
+ * @apiSuccess {Number} parkingSpotsPosted Number of parking spots posted by the created user.
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 Created
+ *     {
+ *         "admin": false,
+ *         "firstName": "John",
+ *         "lastName": "Doe",
+ *         "userName": "johndoe",
+ *         "creationDate": "2022-11-20T15:05:20.254Z",
+ *         "_id": "637a42301497883f834a5caa",
+ *         "parkingSpotsPosted": 0
+ *     }
+ * 
+ * @apiError (Error 500) {Object} error Error object with a code.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *         "error": "Erreur lors de la création de l'utilisateur"
+ *     }
+ */
 
 // Route pour créer un nouvel utilisateur
 router.post("/", async (req, res) => {
@@ -54,6 +201,57 @@ router.post("/", async (req, res) => {
       .json({ error: "Erreur lors de la création de l'utilisateur" });
   }
 });
+
+
+/**
+ * @api {put} /users/:userId Update a user by ID
+ * @apiName UpdateUserById
+ * @apiGroup User
+ * 
+ * @apiDescription Update the information of a user identified by their unique ID.
+ * 
+ * @apiParam {String} userId Unique ID of the user.
+ * @apiParam {String} [firstName] Updated firstname of the user.
+ * @apiParam {String} [lastName] Updated lastname of the user.
+ * @apiParam {String} [userName] Updated username of the user.
+ * @apiParam {String} [password] Updated password of the user.
+ * 
+ * @apiSuccess {Boolean} admin Role of the updated user.
+ * @apiSuccess {String} firstName Updated firstname of the user.
+ * @apiSuccess {String} lastName Updated lastname of the user.
+ * @apiSuccess {String} userName Updated username of the user.
+ * @apiSuccess {String} creationDate Updated creation date of the user.
+ * @apiSuccess {String} _id Unique ID of the user.
+ * @apiSuccess {Number} parkingSpotsPosted Updated number of parking spots posted by the user.
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 201 Created
+ *     {
+ *         "admin": false,
+ *         "firstName": "John",
+ *         "lastName": "Doe",
+ *         "userName": "johndoe",
+ *         "creationDate": "2022-11-20T15:05:20.254Z",
+ *         "_id": "637a42301497883f834a5caa",
+ *         "parkingSpotsPosted": 0
+ *     }
+ * 
+ * @apiError (Error 404) {Object} error Error object indicating the user was not found.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *         "error": "Utilisateur non trouvé"
+ *     }
+ * 
+ * @apiError (Error 500) {Object} error Error object with a code.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *         "error": "Erreur lors de la mise à jour de l'utilisateur"
+ *     }
+ */
 
 // Route de mise à jour d'un utilisateur par son ID
 router.put("/:userId", async (req, res) => {
@@ -87,6 +285,49 @@ router.put("/:userId", async (req, res) => {
       .json({ error: "Erreur lors de la mise à jour de l'utilisateur" });
   }
 });
+
+
+/**
+ * @api {delete} /users/:userId Delete a user by ID
+ * @apiName DeleteUserById
+ * @apiGroup User
+ * 
+ * @apiDescription Delete a user identified by their unique ID.
+ * 
+ * @apiParam {String} userId Unique ID of the user to delete.
+ * 
+ * @apiSuccess {String} message Success message indicating the user was deleted.
+ * 
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *         "message": "Utilisateur supprimé avec succès"
+ *     }
+ * 
+ * @apiError (Error 403) {Object} error Error object indicating the action is not authorized.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 403 Forbidden
+ *     {
+ *         "error": "Action non autorisée"
+ *     }
+ * 
+ * @apiError (Error 404) {Object} error Error object indicating the user was not found.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *         "error": "Utilisateur non trouvé"
+ *     }
+ * 
+ * @apiError (Error 500) {Object} error Error object with a code.
+ * 
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 500 Internal Server Error
+ *     {
+ *         "error": "Erreur lors de la suppression de l'utilisateur"
+ *     }
+ */
 
 // Route pour supprimer un utilisateur par son ID
 router.delete("/:userId", authenticate, async (req, res) => {

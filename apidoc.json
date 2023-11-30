@@ -1,8 +1,7 @@
-
-{
+  {
     "name": "Parking App",
     "version": "1.0.0",
-    "description": "It is awesome",
-    "title": "My project",
-    "url": "https://parking-app-jc1u.onrender.com"
+    "description": "If you are looking for a parking spot, this is the app for you.",
+    "title": "Parking App",
+    "url" : "https://parking-app-jc1u.onrender.com"
   }
