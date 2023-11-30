@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1701381032871" clover="3.2.0">
-  <project timestamp="1701381032871" name="All files">
+<coverage generated="1701383928020" clover="3.2.0">
+  <project timestamp="1701383928020" name="All files">
     <metrics statements="341" coveredstatements="151" conditionals="101" coveredconditionals="28" methods="40" coveredmethods="17" elements="482" coveredelements="196" complexity="0" loc="341" ncloc="341" packages="4" files="15" classes="15"/>
     <package name="Projet-archioweb">
       <metrics statements="56" coveredstatements="32" conditionals="14" coveredconditionals="6" methods="10" coveredmethods="2"/>
@@ -81,7 +81,7 @@
         <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="19" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="23" count="3" type="stmt"/>
-        <line num="69" count="3" type="stmt"/>
+        <line num="65" count="3" type="stmt"/>
       </file>
       <file name="Reservation.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/model/Reservation.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -155,182 +155,182 @@
         <line num="69" count="0" type="stmt"/>
         <line num="70" count="0" type="stmt"/>
         <line num="72" count="0" type="stmt"/>
-        <line num="128" count="3" type="stmt"/>
-        <line num="129" count="0" type="stmt"/>
+        <line num="125" count="3" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
         <line num="130" count="0" type="stmt"/>
-        <line num="133" count="0" type="stmt"/>
-        <line num="136" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="133" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="134" count="0" type="stmt"/>
         <line num="137" count="0" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
-        <line num="200" count="3" type="stmt"/>
-        <line num="201" count="0" type="stmt"/>
-        <line num="202" count="0" type="stmt"/>
-        <line num="203" count="0" type="stmt"/>
-        <line num="205" count="0" type="stmt"/>
-        <line num="210" count="0" type="stmt"/>
-        <line num="212" count="0" type="stmt"/>
-        <line num="224" count="0" type="stmt"/>
-        <line num="226" count="0" type="stmt"/>
-        <line num="227" count="0" type="stmt"/>
-        <line num="299" count="3" type="stmt"/>
-        <line num="300" count="0" type="stmt"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="194" count="3" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="196" count="0" type="stmt"/>
+        <line num="197" count="0" type="stmt"/>
+        <line num="199" count="0" type="stmt"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="206" count="0" type="stmt"/>
+        <line num="218" count="0" type="stmt"/>
+        <line num="220" count="0" type="stmt"/>
+        <line num="221" count="0" type="stmt"/>
+        <line num="290" count="3" type="stmt"/>
+        <line num="291" count="0" type="stmt"/>
+        <line num="292" count="0" type="stmt"/>
+        <line num="293" count="0" type="stmt"/>
+        <line num="294" count="0" type="stmt"/>
+        <line num="297" count="0" type="stmt"/>
+        <line num="300" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="301" count="0" type="stmt"/>
-        <line num="302" count="0" type="stmt"/>
-        <line num="303" count="0" type="stmt"/>
+        <line num="305" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="306" count="0" type="stmt"/>
-        <line num="309" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="310" count="0" type="stmt"/>
-        <line num="314" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="315" count="0" type="stmt"/>
-        <line num="319" count="0" type="stmt"/>
-        <line num="323" count="0" type="stmt"/>
-        <line num="327" count="0" type="stmt"/>
-        <line num="377" count="3" type="stmt"/>
+        <line num="314" count="0" type="stmt"/>
+        <line num="318" count="0" type="stmt"/>
+        <line num="368" count="3" type="stmt"/>
+        <line num="369" count="0" type="stmt"/>
+        <line num="370" count="0" type="stmt"/>
+        <line num="371" count="0" type="stmt"/>
+        <line num="374" count="0" type="stmt"/>
+        <line num="377" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="378" count="0" type="stmt"/>
-        <line num="379" count="0" type="stmt"/>
-        <line num="380" count="0" type="stmt"/>
-        <line num="383" count="0" type="stmt"/>
-        <line num="386" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="387" count="0" type="stmt"/>
-        <line num="391" count="0" type="stmt"/>
-        <line num="394" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="395" count="0" type="stmt"/>
-        <line num="399" count="0" type="stmt"/>
-        <line num="401" count="0" type="stmt"/>
-        <line num="403" count="0" type="stmt"/>
-        <line num="485" count="3" type="stmt"/>
+        <line num="382" count="0" type="stmt"/>
+        <line num="385" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="386" count="0" type="stmt"/>
+        <line num="390" count="0" type="stmt"/>
+        <line num="392" count="0" type="stmt"/>
+        <line num="394" count="0" type="stmt"/>
+        <line num="479" count="3" type="stmt"/>
+        <line num="480" count="0" type="stmt"/>
+        <line num="481" count="0" type="stmt"/>
+        <line num="482" count="0" type="stmt"/>
+        <line num="485" count="0" type="stmt"/>
         <line num="486" count="0" type="stmt"/>
-        <line num="487" count="0" type="stmt"/>
+        <line num="487" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="488" count="0" type="stmt"/>
-        <line num="491" count="0" type="stmt"/>
+        <line num="491" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="492" count="0" type="stmt"/>
-        <line num="493" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="494" count="0" type="stmt"/>
-        <line num="497" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="496" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="497" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="498" count="0" type="stmt"/>
-        <line num="502" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="503" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="504" count="0" type="stmt"/>
+        <line num="501" count="0" type="stmt"/>
         <line num="507" count="0" type="stmt"/>
-        <line num="513" count="0" type="stmt"/>
-        <line num="515" count="0" type="stmt"/>
-        <line num="522" count="0" type="stmt"/>
+        <line num="509" count="0" type="stmt"/>
+        <line num="516" count="0" type="stmt"/>
       </file>
       <file name="reservations.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/reservations.js">
         <metrics statements="62" coveredstatements="6" conditionals="24" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="13" count="3" type="stmt"/>
-        <line num="46" count="3" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="51" count="0" type="stmt"/>
-        <line num="89" count="3" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
-        <line num="91" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="103" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="104" count="0" type="stmt"/>
-        <line num="107" count="0" type="stmt"/>
-        <line num="109" count="0" type="stmt"/>
-        <line num="154" count="3" type="stmt"/>
-        <line num="155" count="0" type="stmt"/>
-        <line num="157" count="0" type="stmt"/>
-        <line num="160" count="0" type="cond" truecount="0" falsecount="6"/>
-        <line num="161" count="0" type="stmt"/>
-        <line num="165" count="0" type="stmt"/>
-        <line num="166" count="0" type="stmt"/>
-        <line num="169" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="170" count="0" type="stmt"/>
-        <line num="176" count="0" type="stmt"/>
-        <line num="182" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="183" count="0" type="stmt"/>
-        <line num="189" count="0" type="stmt"/>
-        <line num="190" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="191" count="0" type="stmt"/>
-        <line num="195" count="0" type="stmt"/>
-        <line num="205" count="0" type="stmt"/>
-        <line num="208" count="0" type="stmt"/>
-        <line num="211" count="0" type="stmt"/>
-        <line num="218" count="0" type="stmt"/>
-        <line num="220" count="0" type="stmt"/>
-        <line num="226" count="0" type="stmt"/>
+        <line num="66" count="3" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="124" count="3" type="stmt"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="129" count="0" type="stmt"/>
+        <line num="138" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="142" count="0" type="stmt"/>
+        <line num="144" count="0" type="stmt"/>
+        <line num="224" count="3" type="stmt"/>
+        <line num="225" count="0" type="stmt"/>
         <line num="227" count="0" type="stmt"/>
-        <line num="256" count="3" type="stmt"/>
-        <line num="257" count="0" type="stmt"/>
-        <line num="258" count="0" type="stmt"/>
+        <line num="230" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="231" count="0" type="stmt"/>
+        <line num="235" count="0" type="stmt"/>
+        <line num="236" count="0" type="stmt"/>
+        <line num="239" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="240" count="0" type="stmt"/>
+        <line num="246" count="0" type="stmt"/>
+        <line num="252" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="253" count="0" type="stmt"/>
         <line num="259" count="0" type="stmt"/>
-        <line num="260" count="0" type="stmt"/>
-        <line num="262" count="0" type="stmt"/>
-        <line num="263" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="264" count="0" type="stmt"/>
-        <line num="267" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="268" count="0" type="stmt"/>
-        <line num="271" count="0" type="stmt"/>
-        <line num="277" count="0" type="stmt"/>
-        <line num="282" count="0" type="stmt"/>
-        <line num="304" count="3" type="stmt"/>
-        <line num="305" count="0" type="stmt"/>
-        <line num="306" count="0" type="stmt"/>
-        <line num="307" count="0" type="stmt"/>
-        <line num="309" count="0" type="stmt"/>
-        <line num="310" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="311" count="0" type="stmt"/>
-        <line num="314" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="315" count="0" type="stmt"/>
-        <line num="318" count="0" type="stmt"/>
-        <line num="320" count="0" type="stmt"/>
-        <line num="322" count="0" type="stmt"/>
+        <line num="260" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="261" count="0" type="stmt"/>
+        <line num="265" count="0" type="stmt"/>
+        <line num="275" count="0" type="stmt"/>
+        <line num="278" count="0" type="stmt"/>
+        <line num="281" count="0" type="stmt"/>
+        <line num="288" count="0" type="stmt"/>
+        <line num="290" count="0" type="stmt"/>
+        <line num="296" count="0" type="stmt"/>
+        <line num="297" count="0" type="stmt"/>
+        <line num="348" count="3" type="stmt"/>
+        <line num="349" count="0" type="stmt"/>
+        <line num="350" count="0" type="stmt"/>
+        <line num="351" count="0" type="stmt"/>
+        <line num="352" count="0" type="stmt"/>
+        <line num="354" count="0" type="stmt"/>
+        <line num="355" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="356" count="0" type="stmt"/>
+        <line num="359" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="360" count="0" type="stmt"/>
+        <line num="363" count="0" type="stmt"/>
+        <line num="369" count="0" type="stmt"/>
+        <line num="374" count="0" type="stmt"/>
+        <line num="415" count="3" type="stmt"/>
+        <line num="416" count="0" type="stmt"/>
+        <line num="417" count="0" type="stmt"/>
+        <line num="418" count="0" type="stmt"/>
+        <line num="420" count="0" type="stmt"/>
+        <line num="421" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="422" count="0" type="stmt"/>
+        <line num="425" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="426" count="0" type="stmt"/>
+        <line num="429" count="0" type="stmt"/>
+        <line num="431" count="0" type="stmt"/>
+        <line num="433" count="0" type="stmt"/>
       </file>
       <file name="users.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/users.js">
         <metrics statements="47" coveredstatements="40" conditionals="14" coveredconditionals="8" methods="5" coveredmethods="5"/>
         <line num="8" count="3" type="stmt"/>
         <line num="9" count="3" type="cond" truecount="1" falsecount="1"/>
-        <line num="55" count="3" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="58" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="59" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="84" count="1" type="stmt"/>
-        <line num="86" count="1" type="stmt"/>
-        <line num="87" count="1" type="stmt"/>
-        <line num="89" count="1" type="stmt"/>
-        <line num="96" count="0" type="stmt"/>
-        <line num="150" count="3" type="stmt"/>
-        <line num="151" count="2" type="stmt"/>
-        <line num="152" count="2" type="stmt"/>
-        <line num="153" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="154" count="1" type="stmt"/>
-        <line num="156" count="1" type="stmt"/>
-        <line num="158" count="0" type="stmt"/>
-        <line num="205" count="3" type="stmt"/>
-        <line num="206" count="3" type="stmt"/>
-        <line num="207" count="3" type="stmt"/>
-        <line num="208" count="3" type="stmt"/>
-        <line num="210" count="3" type="stmt"/>
+        <line num="66" count="3" type="stmt"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="69" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="70" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="161" count="3" type="stmt"/>
+        <line num="162" count="2" type="stmt"/>
+        <line num="163" count="2" type="stmt"/>
+        <line num="164" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="165" count="1" type="stmt"/>
+        <line num="167" count="1" type="stmt"/>
+        <line num="169" count="0" type="stmt"/>
+        <line num="214" count="3" type="stmt"/>
+        <line num="215" count="3" type="stmt"/>
+        <line num="216" count="3" type="stmt"/>
         <line num="217" count="3" type="stmt"/>
-        <line num="218" count="1" type="stmt"/>
-        <line num="220" count="2" type="stmt"/>
-        <line num="278" count="3" type="stmt"/>
-        <line num="279" count="1" type="stmt"/>
-        <line num="280" count="1" type="stmt"/>
-        <line num="283" count="1" type="stmt"/>
-        <line num="297" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="298" count="0" type="stmt"/>
-        <line num="302" count="1" type="stmt"/>
-        <line num="307" count="0" type="stmt"/>
-        <line num="357" count="3" type="stmt"/>
-        <line num="358" count="1" type="stmt"/>
-        <line num="359" count="1" type="stmt"/>
-        <line num="360" count="1" type="stmt"/>
-        <line num="363" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="364" count="0" type="stmt"/>
-        <line num="368" count="1" type="stmt"/>
+        <line num="219" count="3" type="stmt"/>
+        <line num="226" count="3" type="stmt"/>
+        <line num="227" count="1" type="stmt"/>
+        <line num="229" count="2" type="stmt"/>
+        <line num="285" count="3" type="stmt"/>
+        <line num="286" count="1" type="stmt"/>
+        <line num="287" count="1" type="stmt"/>
+        <line num="290" count="1" type="stmt"/>
+        <line num="304" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="305" count="0" type="stmt"/>
+        <line num="309" count="1" type="stmt"/>
+        <line num="314" count="0" type="stmt"/>
+        <line num="364" count="3" type="stmt"/>
+        <line num="365" count="1" type="stmt"/>
+        <line num="366" count="1" type="stmt"/>
+        <line num="367" count="1" type="stmt"/>
         <line num="370" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="371" count="0" type="stmt"/>
-        <line num="374" count="1" type="stmt"/>
-        <line num="376" count="0" type="stmt"/>
+        <line num="375" count="1" type="stmt"/>
+        <line num="377" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="378" count="0" type="stmt"/>
+        <line num="381" count="1" type="stmt"/>
+        <line num="383" count="0" type="stmt"/>
       </file>
       <file name="vehicules.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/vehicules.js">
         <metrics statements="52" coveredstatements="16" conditionals="10" coveredconditionals="0" methods="5" coveredmethods="2"/>

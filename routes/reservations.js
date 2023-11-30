@@ -50,9 +50,9 @@ const router = express.Router();
                 "lastName": "Doe",
                 "userName": "john_doe"
             },
-            // ... other reservation details
-        },
-        // ... other reservations
+            "startDate": "2023-05-01T09:00:00.000Z",
+    "endDate": "2023-05-01T17:00:00.000Z",
+      
     ]
 
 @apiErrorExample {json} Error-Response:
@@ -105,7 +105,14 @@ router.get("/", async (req, res) => {
     {
         "_id": "reservation123",
         "parkingId": "parking456",
-        // ... other reservation details
+         "renterUserId": {
+        "_id": "5f50c31f1234567890123458",
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "userName": "alice_smith"
+    },
+    "startDate": "2023-05-01T09:00:00.000Z",
+    "endDate": "2023-05-01T17:00:00.000Z",
     }
 
 @apiErrorExample {json} Error-Response (Not Found):
@@ -186,7 +193,15 @@ router.get("/:reservationId", async (req, res) => {
         "message": "Réservation faite avec succès.",
         "reservation": {
             "_id": "newReservation123",
-            // ... other reservation details
+            "parkingId": "parking456",
+         "renterUserId": {
+        "_id": "5f50c31f1234567890123458",
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "userName": "alice_smith"
+    },
+    "startDate": "2023-05-01T09:00:00.000Z",
+    "endDate": "2023-05-01T17:00:00.000Z",
         }
     }
 
@@ -322,7 +337,15 @@ router.post("/", authenticate, async (req, res) => {
         "message": "Réservation mise à jour avec succès",
         "updatedReservation": {
             "_id": "updatedReservation123",
-            // ... other updated reservation details
+            "parkingId": "parking456",
+         "renterUserId": {
+        "_id": "5f50c31f1234567890123458",
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "userName": "alice_smith"
+    },
+    "startDate": "2023-05-01T09:00:00.000Z",
+    "endDate": "2023-05-01T17:00:00.000Z",
         }
     }
 
