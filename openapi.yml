@@ -1,11 +1,279 @@
+
 openapi: 3.0.0
 info:
   title: Parking Location App
   version: 1.0.0
 paths:
-  /example:
+  /reservations:
     get:
-      summary: Get an example
+      summary: Get all reservations
       responses:
         '200':
           description: Successful response
+    post:
+      summary: Create a new reservation
+      operationId: createReservation
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      requestBody:
+        content:
+          application/json:
+            example:
+              parkingId: "12345"
+              startDate: "2023-12-01T12:00:00Z"
+              endDate: "2023-12-02T12:00:00Z"
+              vehiculeId: "67890"
+      responses:
+        '201':
+          description: Reservation created successfully
+  /reservations/{reservationId}:
+    get:
+      summary: Get a reservation by ID
+      operationId: getReservationById
+      parameters:
+        - name: reservationId
+          in: path
+          required: true
+          description: ID of the reservation
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                reservationId: "12345"
+                parkingId: "54321"
+                startDate: "2023-12-01T12:00:00Z"
+                endDate: "2023-12-02T12:00:00Z"
+                vehiculeId: "67890"
+                status: "In process"
+    put:
+      summary: Update a reservation by ID
+      operationId: updateReservationById
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: reservationId
+          in: path
+          required: true
+          description: ID of the reservation
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              startDate: "2023-12-01T14:00:00Z"
+              endDate: "2023-12-02T14:00:00Z"
+      responses:
+        '200':
+          description: Reservation updated successfully
+        '404':
+          description: Reservation not found
+    delete:
+      summary: Delete a reservation by ID
+      operationId: deleteReservationById
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: reservationId
+          in: path
+          required: true
+          description: ID of the reservation
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation deleted successfully
+        '404':
+          description: Reservation not found
+  /places:
+    post:
+      summary: Create a new place
+      operationId: createPlace
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: "Parking Place 1"
+              description: "Description of the parking place"
+              // Include other place attributes
+      responses:
+        '201':
+          description: Place created successfully
+  /places/{placeId}:
+    put:
+      summary: Update a place by ID
+      operationId: updatePlaceById
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: placeId
+          in: path
+          required: true
+          description: ID of the place
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              name: "Updated Parking Place 1"
+              description: "Updated description of the parking place"
+              // Include other place attributes
+      responses:
+        '200':
+          description: Place updated successfully
+        '404':
+          description: Place not found
+    delete:
+      summary: Delete a place by ID
+      operationId: deletePlaceById
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: placeId
+          in: path
+          required: true
+          description: ID of the place
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Place deleted successfully
+        '404':
+          description: Place not found
+  /places/{placeId}/reservations:
+    get:
+      summary: Get reservations for a place
+      operationId: getReservationsForPlace
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: placeId
+          in: path
+          required: true
+          description: ID of the place
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+  /vehicules:
+    get:
+      summary: Get all vehicules
+      responses:
+        '200':
+          description: Successful response
+    post:
+      summary: Create a new vehicule
+      operationId: createVehicule
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      requestBody:
+        content:
+          application/json:
+            example:
+              registrationNumber: "ABC123"
+              // Include other vehicule attributes
+      responses:
+        '201':
+          description: Vehicule created successfully
+  /vehicules/{vehiculeId}:
+    get:
+      summary: Get a vehicule by ID
+      operationId: getVehiculeById
+      parameters:
+        - name: vehiculeId
+          in: path
+          required: true
+          description: ID of the vehicule
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                registrationNumber: "ABC123"
+                // Include other vehicule attributes
+    put:
+      summary: Update a vehicule by ID
+      operationId: updateVehiculeById
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: vehiculeId
+          in: path
+          required: true
+          description: ID of the vehicule
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              registrationNumber: "XYZ789"
+              // Include other vehicule attributes
+      responses:
+        '200':
+          description: Vehicule updated successfully
+        '404':
+          description: Vehicule not found
+    delete:
+      summary: Delete a vehicule by ID
+      operationId: deleteVehiculeById
+      security:
+        - jwtAuth: []  # Assuming you have authentication middleware named jwtAuth
+      parameters:
+        - name: vehiculeId
+          in: path
+          required: true
+          description: ID of the vehicule
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Vehicule deleted successfully
+        '404':
+          description: Vehicule not found
+  /users/signup:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            example:
+              userName: "john_doe"
+              password: "password123"
+              // Include other user registration attributes
+      responses:
+        '201':
+          description: User registered successfully
+  /users/connect:
+    post:
+      summary: Authenticate a user
+      operationId: authenticateUser
+      requestBody:
+        content:
+          application/json:
+            example:
+              userName: "john_doe"
+              password: "password123"
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              example:
+                token: "jwt_token_here"
+                user:
+                  // Include user details
+        '401':
+          description: Authentication failed
