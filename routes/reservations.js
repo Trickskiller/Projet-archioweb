@@ -199,7 +199,6 @@ router.post("/", authenticate, async (req, res) => {
       vehiculeId,
       startDate,
       endDate,
-      status: "In process",
     });
 
     // Sauvegarder la nouvelle réservation dans la base de données

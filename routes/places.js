@@ -210,7 +210,7 @@ router.post("/", authenticate, async (req, res) => {
     await newPlace.save();
 
     broadcastMessage({
-      type: 'new-place-available',
+      type: 'Nouvelle place disponible',
       data: {
         id: newPlace._id,
         description: newPlace.description,
