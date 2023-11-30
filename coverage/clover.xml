@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1701380177746" clover="3.2.0">
-  <project timestamp="1701380177746" name="All files">
+<coverage generated="1701381032871" clover="3.2.0">
+  <project timestamp="1701381032871" name="All files">
     <metrics statements="341" coveredstatements="151" conditionals="101" coveredconditionals="28" methods="40" coveredmethods="17" elements="482" coveredelements="196" complexity="0" loc="341" ncloc="341" packages="4" files="15" classes="15"/>
-    <package name="parking">
+    <package name="Projet-archioweb">
       <metrics statements="56" coveredstatements="32" conditionals="14" coveredconditionals="6" methods="10" coveredmethods="2"/>
-      <file name="app.js" path="D:\Archioweb\parking\app.js">
+      <file name="app.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/app.js">
         <metrics statements="22" coveredstatements="17" conditionals="6" coveredconditionals="1" methods="2" coveredmethods="0"/>
         <line num="16" count="3" type="stmt"/>
         <line num="17" count="3" type="stmt"/>
@@ -29,7 +29,7 @@
         <line num="64" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="65" count="0" type="stmt"/>
       </file>
-      <file name="auth.js" path="D:\Archioweb\parking\auth.js">
+      <file name="auth.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/auth.js">
         <metrics statements="14" coveredstatements="12" conditionals="6" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="3" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
@@ -46,11 +46,11 @@
         <line num="23" count="2" type="stmt"/>
         <line num="24" count="2" type="stmt"/>
       </file>
-      <file name="config.js" path="D:\Archioweb\parking\config.js">
+      <file name="config.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/config.js">
         <metrics statements="1" coveredstatements="1" conditionals="2" coveredconditionals="1" methods="0" coveredmethods="0"/>
         <line num="2" count="3" type="cond" truecount="1" falsecount="1"/>
       </file>
-      <file name="ws.js" path="D:\Archioweb\parking\ws.js">
+      <file name="ws.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/ws.js">
         <metrics statements="19" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="4" count="3" type="stmt"/>
         <line num="6" count="3" type="stmt"/>
@@ -73,9 +73,9 @@
         <line num="54" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="parking.model">
+    <package name="Projet-archioweb.model">
       <metrics statements="15" coveredstatements="15" conditionals="9" coveredconditionals="9" methods="4" coveredmethods="4"/>
-      <file name="Place.js" path="D:\Archioweb\parking\model\Place.js">
+      <file name="Place.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/model/Place.js">
         <metrics statements="5" coveredstatements="5" conditionals="9" coveredconditionals="9" methods="3" coveredmethods="3"/>
         <line num="5" count="2" type="stmt"/>
         <line num="15" count="2" type="cond" truecount="2" falsecount="0"/>
@@ -83,12 +83,12 @@
         <line num="23" count="3" type="stmt"/>
         <line num="69" count="3" type="stmt"/>
       </file>
-      <file name="Reservation.js" path="D:\Archioweb\parking\model\Reservation.js">
+      <file name="Reservation.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/model/Reservation.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="14" count="3" type="stmt"/>
-        <line num="55" count="3" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="42" count="3" type="stmt"/>
       </file>
-      <file name="User.js" path="D:\Archioweb\parking\model\User.js">
+      <file name="User.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/model/User.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="5" count="3" type="stmt"/>
         <line num="49" count="3" type="stmt"/>
@@ -97,21 +97,21 @@
         <line num="56" count="4" type="stmt"/>
         <line num="61" count="3" type="stmt"/>
       </file>
-      <file name="Vehicule.js" path="D:\Archioweb\parking\model\Vehicule.js">
+      <file name="Vehicule.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/model/Vehicule.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="5" count="3" type="stmt"/>
         <line num="36" count="3" type="stmt"/>
       </file>
     </package>
-    <package name="parking.routes">
+    <package name="Projet-archioweb.routes">
       <metrics statements="264" coveredstatements="98" conditionals="78" coveredconditionals="13" methods="24" coveredmethods="9"/>
-      <file name="index.js" path="D:\Archioweb\parking\routes\index.js">
+      <file name="index.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/index.js">
         <metrics statements="3" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="2" count="3" type="stmt"/>
         <line num="4" count="3" type="stmt"/>
         <line num="5" count="0" type="stmt"/>
       </file>
-      <file name="login.js" path="D:\Archioweb\parking\routes\login.js">
+      <file name="login.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/login.js">
         <metrics statements="29" coveredstatements="27" conditionals="6" coveredconditionals="5" methods="2" coveredmethods="2"/>
         <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
@@ -143,7 +143,7 @@
         <line num="88" count="1" type="stmt"/>
         <line num="90" count="0" type="stmt"/>
       </file>
-      <file name="places.js" path="D:\Archioweb\parking\routes\places.js">
+      <file name="places.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/places.js">
         <metrics statements="71" coveredstatements="7" conditionals="24" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="12" count="3" type="stmt"/>
         <line num="57" count="3" type="stmt"/>
@@ -217,7 +217,7 @@
         <line num="515" count="0" type="stmt"/>
         <line num="522" count="0" type="stmt"/>
       </file>
-      <file name="reservations.js" path="D:\Archioweb\parking\routes\reservations.js">
+      <file name="reservations.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/reservations.js">
         <metrics statements="62" coveredstatements="6" conditionals="24" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="13" count="3" type="stmt"/>
         <line num="46" count="3" type="stmt"/>
@@ -249,40 +249,40 @@
         <line num="190" count="0" type="cond" truecount="0" falsecount="4"/>
         <line num="191" count="0" type="stmt"/>
         <line num="195" count="0" type="stmt"/>
-        <line num="206" count="0" type="stmt"/>
-        <line num="209" count="0" type="stmt"/>
-        <line num="212" count="0" type="stmt"/>
-        <line num="219" count="0" type="stmt"/>
-        <line num="221" count="0" type="stmt"/>
+        <line num="205" count="0" type="stmt"/>
+        <line num="208" count="0" type="stmt"/>
+        <line num="211" count="0" type="stmt"/>
+        <line num="218" count="0" type="stmt"/>
+        <line num="220" count="0" type="stmt"/>
+        <line num="226" count="0" type="stmt"/>
         <line num="227" count="0" type="stmt"/>
-        <line num="228" count="0" type="stmt"/>
-        <line num="257" count="3" type="stmt"/>
+        <line num="256" count="3" type="stmt"/>
+        <line num="257" count="0" type="stmt"/>
         <line num="258" count="0" type="stmt"/>
         <line num="259" count="0" type="stmt"/>
         <line num="260" count="0" type="stmt"/>
-        <line num="261" count="0" type="stmt"/>
-        <line num="263" count="0" type="stmt"/>
-        <line num="264" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="265" count="0" type="stmt"/>
-        <line num="268" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="269" count="0" type="stmt"/>
-        <line num="272" count="0" type="stmt"/>
-        <line num="278" count="0" type="stmt"/>
-        <line num="283" count="0" type="stmt"/>
-        <line num="305" count="3" type="stmt"/>
+        <line num="262" count="0" type="stmt"/>
+        <line num="263" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="264" count="0" type="stmt"/>
+        <line num="267" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="268" count="0" type="stmt"/>
+        <line num="271" count="0" type="stmt"/>
+        <line num="277" count="0" type="stmt"/>
+        <line num="282" count="0" type="stmt"/>
+        <line num="304" count="3" type="stmt"/>
+        <line num="305" count="0" type="stmt"/>
         <line num="306" count="0" type="stmt"/>
         <line num="307" count="0" type="stmt"/>
-        <line num="308" count="0" type="stmt"/>
-        <line num="310" count="0" type="stmt"/>
-        <line num="311" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="312" count="0" type="stmt"/>
-        <line num="315" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="316" count="0" type="stmt"/>
-        <line num="319" count="0" type="stmt"/>
-        <line num="321" count="0" type="stmt"/>
-        <line num="323" count="0" type="stmt"/>
+        <line num="309" count="0" type="stmt"/>
+        <line num="310" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="311" count="0" type="stmt"/>
+        <line num="314" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="315" count="0" type="stmt"/>
+        <line num="318" count="0" type="stmt"/>
+        <line num="320" count="0" type="stmt"/>
+        <line num="322" count="0" type="stmt"/>
       </file>
-      <file name="users.js" path="D:\Archioweb\parking\routes\users.js">
+      <file name="users.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/users.js">
         <metrics statements="47" coveredstatements="40" conditionals="14" coveredconditionals="8" methods="5" coveredmethods="5"/>
         <line num="8" count="3" type="stmt"/>
         <line num="9" count="3" type="cond" truecount="1" falsecount="1"/>
@@ -315,24 +315,24 @@
         <line num="278" count="3" type="stmt"/>
         <line num="279" count="1" type="stmt"/>
         <line num="280" count="1" type="stmt"/>
-        <line num="284" count="1" type="stmt"/>
-        <line num="298" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="299" count="0" type="stmt"/>
-        <line num="303" count="1" type="stmt"/>
-        <line num="308" count="0" type="stmt"/>
-        <line num="358" count="3" type="stmt"/>
+        <line num="283" count="1" type="stmt"/>
+        <line num="297" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="298" count="0" type="stmt"/>
+        <line num="302" count="1" type="stmt"/>
+        <line num="307" count="0" type="stmt"/>
+        <line num="357" count="3" type="stmt"/>
+        <line num="358" count="1" type="stmt"/>
         <line num="359" count="1" type="stmt"/>
         <line num="360" count="1" type="stmt"/>
-        <line num="361" count="1" type="stmt"/>
-        <line num="364" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="365" count="0" type="stmt"/>
-        <line num="369" count="1" type="stmt"/>
-        <line num="371" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="372" count="0" type="stmt"/>
-        <line num="375" count="1" type="stmt"/>
-        <line num="377" count="0" type="stmt"/>
+        <line num="363" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="364" count="0" type="stmt"/>
+        <line num="368" count="1" type="stmt"/>
+        <line num="370" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="371" count="0" type="stmt"/>
+        <line num="374" count="1" type="stmt"/>
+        <line num="376" count="0" type="stmt"/>
       </file>
-      <file name="vehicules.js" path="D:\Archioweb\parking\routes\vehicules.js">
+      <file name="vehicules.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/routes/vehicules.js">
         <metrics statements="52" coveredstatements="16" conditionals="10" coveredconditionals="0" methods="5" coveredmethods="2"/>
         <line num="8" count="3" type="stmt"/>
         <line num="26" count="3" type="stmt"/>
@@ -388,9 +388,9 @@
         <line num="195" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="parking.spec">
+    <package name="Projet-archioweb.spec">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-      <file name="utils.js" path="D:\Archioweb\parking\spec\utils.js">
+      <file name="utils.js" path="/Users/larahoerler/Desktop/ArchiOWeb/Projet-archioweb/spec/utils.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="6" count="3" type="stmt"/>
         <line num="8" count="3" type="stmt"/>

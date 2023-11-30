@@ -8,28 +8,38 @@ import authenticate from "../auth.js";
 const router = express.Router();
 const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser une clé secrète plus complexe et la stocker en sécurité.
 
+
 /**
  * @api {get} /users Request a list of users
  * @apiName GetUsers
  * @apiGroup User
+ * @apiVersion 1.0.0
+ * @apiPermission admin
  * 
- * @apiDescription Retrieve a paginated list of users.
+ * @apiDescription Retrieve a paginated list of users with the number of places they have posted.
  * 
- * @apiParam {Number} [pageSize=10] The number of users to return per page.
- * @apiParam {Number} [page=1] The page number to retrieve.
+ * @apiQuery {Number} [page=1] The page number to retrieve.
+ * @apiQuery {Number} [limit=10] The number of users to return per page.
  * 
+ * @apiSuccess {Number} total Total number of users.
+ * @apiSuccess {Number} page Current page number.
+ * @apiSuccess {Number} pageSize Number of users in the current page.
  * @apiSuccess {Object[]} users List of users.
- * @apiSuccess {Boolean} users.admin Role of the users.
- * @apiSuccess {String} users.firstName Firstname of the users.
- * @apiSuccess {String} users.lastName Lastname of the users.
- * @apiSuccess {String} users.userName Username of the users.
- * @apiSuccess {String} users.creationDate Creation date of the users.
- * @apiSuccess {String} users._id Id of the users.
- * @apiSuccess {Number} users.placePosted Number of parking spots posted by the user.
+ * @apiSuccess {Boolean} users.admin Indicates if the user is an admin.
+ * @apiSuccess {String} users.firstName Firstname of the user.
+ * @apiSuccess {String} users.lastName Lastname of the user.
+ * @apiSuccess {String} users.userName Username of the user.
+ * @apiSuccess {String} users.creationDate Creation date of the user.
+ * @apiSuccess {String} users._id Unique ID of the user.
+ * @apiSuccess {Number} users.placesCount Number of parking spots posted by the user.
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
- *     [
+ *     {
+ *       "total": 100,
+ *       "page": 1,
+ *       "pageSize": 10,
+ *       "users": [
  *         {
  *             "admin": false,
  *             "firstName": "John",
@@ -37,19 +47,20 @@ const secretKey = process.env.SECRET_KEY || "changeme"; // Vous devriez utiliser
  *             "userName": "johndoe",
  *             "creationDate": "2022-11-20T15:05:20.254Z",
  *             "_id": "637a42301497883f834a5caa",
- *             "PlacePosted": 0
- *         }
- *     ]
+ *             "placesCount": 2
+ *         },
+ *         // ... other users
+ *       ]
+ *     }
  * 
- * @apiError (Error 500) {Object} error Error object with a code.
+ * @apiError (Error 500) {Object} error Error object with a message.
  * 
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 Internal Server Error
  *     {
- *         "error": "Error fetching users"
+ *         "error": "Erreur lors de la récupération des utilisateurs"
  *     }
  */
-
 
 // Route pour obtenir tous les utilisateurs "users"
 router.get("/", async (req, res) => {
@@ -178,7 +189,6 @@ router.get("/:userId", async (req, res) => {
  * @apiSuccess {String} userName Username of the created user.
  * @apiSuccess {String} creationDate Creation date of the created user.
  * @apiSuccess {String} _id Unique ID of the created user.
- * @apiSuccess {Number} parkingSpotsPosted Number of parking spots posted by the created user.
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 Created
@@ -189,7 +199,6 @@ router.get("/:userId", async (req, res) => {
  *         "userName": "johndoe",
  *         "creationDate": "2022-11-20T15:05:20.254Z",
  *         "_id": "637a42301497883f834a5caa",
- *         "parkingSpotsPosted": 0
  *     }
  * 
  * @apiError (Error 500) {Object} error Error object with a code.
@@ -243,7 +252,6 @@ router.post("/", async (req, res) => {
  * @apiSuccess {String} userName Updated username of the user.
  * @apiSuccess {String} creationDate Updated creation date of the user.
  * @apiSuccess {String} _id Unique ID of the user.
- * @apiSuccess {Number} parkingSpotsPosted Updated number of parking spots posted by the user.
  * 
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 201 Created
@@ -254,7 +262,6 @@ router.post("/", async (req, res) => {
  *         "userName": "johndoe",
  *         "creationDate": "2022-11-20T15:05:20.254Z",
  *         "_id": "637a42301497883f834a5caa",
- *         "parkingSpotsPosted": 0
  *     }
  * 
  * @apiError (Error 404) {Object} error Error object indicating the user was not found.

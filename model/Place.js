@@ -47,10 +47,6 @@ const placeSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  availabilityDate: {
-    type: Date,
-    required: false,
-  },
   // Relation avec le modèle User pour savoir qui a posté la place -> propriétaire
   userId: {
     type: mongoose.ObjectId,

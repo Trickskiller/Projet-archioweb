@@ -31,16 +31,36 @@ const router = express.Router();
  * @apiSuccess {String} reservations.parkingId.type Parking type.
  * @apiSuccess {Number[]} reservations.parkingId.geolocation Parking geolocation coordinates [longitude, latitude].
  * @apiSuccess {String} reservations.parkingId.picture Parking picture URL.
- * @apiSuccess {Date} reservations.parkingId.availabilityDate Parking availability date.
  * @apiSuccess {Object} reservations.vehiculeId Vehicule details.
  * @apiSuccess {String} reservations.vehiculeId._id Vehicule ID.
  * @apiSuccess {String} reservations.vehiculeId.registrationNumber Vehicule registration number.
  * @apiSuccess {Date} reservations.startDate Reservation start date.
  * @apiSuccess {Date} reservations.endDate Reservation end date.
- * @apiSuccess {String} reservations.status Reservation status.
  *
- * @apiError {Object} error Error object with details.
- * @apiError {String} error.message Error message.
+ * 
+ * @apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    [
+        {
+            "_id": "reservation123",
+            "parkingId": "parking456",
+            "renterUserId": {
+                "_id": "user789",
+                "firstName": "John",
+                "lastName": "Doe",
+                "userName": "john_doe"
+            },
+            // ... other reservation details
+        },
+        // ... other reservations
+    ]
+
+@apiErrorExample {json} Error-Response:
+    HTTP/1.1 500 Internal Server Error
+    {
+        "error": "Erreur lors de la récupération des réservations"
+    }
+
  */
 // Route pour récupérer toutes les résa
 router.get("/", async (req, res) => {
@@ -74,16 +94,31 @@ router.get("/", async (req, res) => {
  * @apiSuccess {String} parkingId.type Parking type.
  * @apiSuccess {Number[]} parkingId.geolocation Parking geolocation coordinates [longitude, latitude].
  * @apiSuccess {String} parkingId.picture Parking picture URL.
- * @apiSuccess {Date} parkingId.availabilityDate Parking availability date.
  * @apiSuccess {Object} vehiculeId Vehicule details.
  * @apiSuccess {String} vehiculeId._id Vehicule ID.
  * @apiSuccess {String} vehiculeId.registrationNumber Vehicule registration number.
  * @apiSuccess {Date} startDate Reservation start date.
  * @apiSuccess {Date} endDate Reservation end date.
- * @apiSuccess {String} status Reservation status.
- *
- * @apiError {Object} error Error object with details.
- * @apiError {String} error.message Error message.
+
+ @apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    {
+        "_id": "reservation123",
+        "parkingId": "parking456",
+        // ... other reservation details
+    }
+
+@apiErrorExample {json} Error-Response (Not Found):
+    HTTP/1.1 404 Not Found
+    {
+        "error": "Réservation non trouvée"
+    }
+
+@apiErrorExample {json} Error-Response (Server Error):
+    HTTP/1.1 500 Internal Server Error
+    {
+        "error": "Erreur lors de la récupération de la réservation"
+    }
  */
 // Route pour récupérer une réservation par son ID
 router.get("/:reservationId", async (req, res) => {
@@ -139,16 +174,51 @@ router.get("/:reservationId", async (req, res) => {
  * @apiSuccess {String} reservation.parkingId.type Parking type.
  * @apiSuccess {Number[]} reservation.parkingId.geolocation Parking geolocation coordinates [longitude, latitude].
  * @apiSuccess {String} reservation.parkingId.picture Parking picture URL.
- * @apiSuccess {Date} reservation.parkingId.availabilityDate Parking availability date.
  * @apiSuccess {Object} reservation.vehiculeId Vehicule details.
  * @apiSuccess {String} reservation.vehiculeId._id Vehicule ID.
  * @apiSuccess {String} reservation.vehiculeId.registrationNumber Vehicule registration number.
  * @apiSuccess {Date} reservation.startDate Reservation start date.
  * @apiSuccess {Date} reservation.endDate Reservation end date.
- * @apiSuccess {String} reservation.status Reservation status.
  *
- * @apiError {Object} error Error object with details.
- * @apiError {String} error.message Error message.
+ *@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 Created
+    {
+        "message": "Réservation faite avec succès.",
+        "reservation": {
+            "_id": "newReservation123",
+            // ... other reservation details
+        }
+    }
+
+@apiErrorExample {json} Error-Response (Invalid Parameters):
+    HTTP/1.1 400 Bad Request
+    {
+        "error": "Paramètres de réservation invalides."
+    }
+
+@apiErrorExample {json} Error-Response (Not Found):
+    HTTP/1.1 404 Not Found
+    {
+        "error": "La place de parking spécifiée n'existe pas."
+    }
+
+@apiErrorExample {json} Error-Response (Conflict):
+    HTTP/1.1 400 Bad Request
+    {
+        "error": "Une réservation existe déjà pour ces dates."
+    }
+
+@apiErrorExample {json} Error-Response (Forbidden):
+    HTTP/1.1 403 Forbidden
+    {
+        "error": "Véhicule non autorisé ou inexistant."
+    }
+
+@apiErrorExample {json} Error-Response (Server Error):
+    HTTP/1.1 500 Internal Server Error
+    {
+        "error": "Erreur interne du serveur lors de la création de la réservation."
+    }
  */
 // Route pour créer une nouvelle réservation
 router.post("/", authenticate, async (req, res) => {
@@ -244,13 +314,35 @@ router.post("/", authenticate, async (req, res) => {
  * @apiParam {Date} [startDate] Reservation start date.
  * @apiParam {Date} [endDate] Reservation end date.
  * @apiParam {String} [vehiculeId] Vehicule ID for the reservation.
- * @apiParam {String} [status] Reservation status.
- *
- * @apiSuccess {String} message Success message.
  * @apiSuccess {Object} updatedReservation Updated reservation details.
  *
- * @apiError {Object} error Error object with details.
- * @apiError {String} error.message Error message.
+ *@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    {
+        "message": "Réservation mise à jour avec succès",
+        "updatedReservation": {
+            "_id": "updatedReservation123",
+            // ... other updated reservation details
+        }
+    }
+
+@apiErrorExample {json} Error-Response (Not Found):
+    HTTP/1.1 404 Not Found
+    {
+        "error": "Réservation non trouvée"
+    }
+
+@apiErrorExample {json} Error-Response (Forbidden):
+    HTTP/1.1 403 Forbidden
+    {
+        "error": "Action non autorisée"
+    }
+
+@apiErrorExample {json} Error-Response (Server Error):
+    HTTP/1.1 500 Internal Server Error
+    {
+        "error": "Erreur lors de la mise à jour de la réservation"
+    }
  */
 
 router.put("/:reservationId", authenticate, async (req, res) => {
@@ -295,10 +387,29 @@ router.put("/:reservationId", authenticate, async (req, res) => {
  *
  * @apiParam {String} reservationId Reservation ID.
  *
- * @apiSuccess {String} message Success message.
- *
- * @apiError {Object} error Error object with details.
- * @apiError {String} error.message Error message.
+ * @apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    {
+        "message": "Réservation supprimée avec succès"
+    }
+
+@apiErrorExample {json} Error-Response (Not Found):
+    HTTP/1.1 404 Not Found
+    {
+        "error": "Réservation non trouvée"
+    }
+
+@apiErrorExample {json} Error-Response (Forbidden):
+    HTTP/1.1 403 Forbidden
+    {
+        "error": "Action non autorisée"
+    }
+
+@apiErrorExample {json} Error-Response (Server Error):
+    HTTP/1.1 500 Internal Server Error
+    {
+        "error": "Erreur lors de la suppression de la réservation"
+    }
  */
 
 router.delete("/:reservationId", authenticate, async (req, res) => {

@@ -15,16 +15,18 @@ const router = express.Router();
  * @api {get} /places Get all places
  * @apiName GetAllPlaces
  * @apiGroup Place
+ * @apiVersion 1.0.0
+ * 
+ * @apiDescription Retrieve a list of all places. You can filter the places by type.
  *
- * @apiDescription Retrieve a list of all places.
- *
+ * @apiQuery {String} [type] Optional filter by type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
+ * 
  * @apiSuccess {Object[]} places List of places.
  * @apiSuccess {String} places._id Unique ID of the place.
  * @apiSuccess {String} places.description Description of the place.
  * @apiSuccess {String} places.type Type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
  * @apiSuccess {Number[]} places.geolocation Geolocation coordinates in the format [longitude, latitude].
  * @apiSuccess {String} places.picture URL of the picture associated with the place.
- * @apiSuccess {Date} places.availabilityDate Availability date of the place.
  * @apiSuccess {String} places.userId Unique ID of the user who posted the place.
  * @apiSuccess {String} places.reservationId Unique ID of the reservation associated with the place.
  *
@@ -37,7 +39,6 @@ const router = express.Router();
  *             "type": "Parking couvert",
  *             "geolocation": [2.3522, 48.8566],
  *             "picture": "https://example.com/parking.jpg",
- *             "availabilityDate": "2023-01-01T00:00:00.000Z",
  *             "userId": "637a42301497883f834a5cbb",
  *             "reservationId": "637a42301497883f834a5ccc"
  *         },
@@ -45,7 +46,6 @@ const router = express.Router();
  *     ]
  *
  * @apiError (Error 500) {Object} error Error object with a code.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 Internal Server Error
  *     {
@@ -75,7 +75,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places par exemple selon son type
 
 /**
  * @api {get} /places/:placeId Get place by ID
@@ -91,7 +90,6 @@ router.get("/", async (req, res) => {
  * @apiSuccess {String} type Type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
  * @apiSuccess {Number[]} geolocation Geolocation coordinates in the format [longitude, latitude].
  * @apiSuccess {String} picture URL of the picture associated with the place.
- * @apiSuccess {Date} availabilityDate Availability date of the place.
  * @apiSuccess {String} userId Unique ID of the user who posted the place.
  * @apiSuccess {String} reservationId Unique ID of the reservation associated with the place.
  *
@@ -103,7 +101,6 @@ router.get("/", async (req, res) => {
  *         "type": "Parking couvert",
  *         "geolocation": [2.3522, 48.8566],
  *         "picture": "https://example.com/parking.jpg",
- *         "availabilityDate": "2023-01-01T00:00:00.000Z",
  *         "userId": "637a42301497883f834a5cbb",
  *         "reservationId": "637a42301497883f834a5ccc"
  *     }
@@ -158,7 +155,6 @@ router.get("/:placeId", async (req, res) => {
  * @apiParam {String} type Type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
  * @apiParam {Number[]} geolocation Geolocation coordinates in the format [longitude, latitude].
  * @apiParam {String} [picture] URL of the picture associated with the place.
- * @apiParam {Date} [availabilityDate] Availability date of the place.
  *
  * @apiSuccess {String} message Success message.
  * @apiSuccess {Object} newPlace Details of the newly created place.
@@ -167,7 +163,6 @@ router.get("/:placeId", async (req, res) => {
  * @apiSuccess {String} newPlace.type Type of the place.
  * @apiSuccess {Number[]} newPlace.geolocation Geolocation coordinates.
  * @apiSuccess {String} newPlace.picture URL of the picture associated with the place.
- * @apiSuccess {Date} newPlace.availabilityDate Availability date of the place.
  * @apiSuccess {String} newPlace.userId Unique ID of the user who posted the place.
  * @apiSuccess {String} newPlace.reservationId Unique ID of the reservation associated with the place.
  *
@@ -181,7 +176,6 @@ router.get("/:placeId", async (req, res) => {
  *             "type": "Parking couvert",
  *             "geolocation": [2.3522, 48.8566],
  *             "picture": "https://example.com/parking.jpg",
- *             "availabilityDate": "2023-01-01T00:00:00.000Z",
  *             "userId": "637a42301497883f834a5cbb",
  *             "reservationId": "637a42301497883f834a5ccc"
  *         }
@@ -242,7 +236,6 @@ router.post("/", authenticate, async (req, res) => {
  * @apiParam {String} [type] New type of the place.
  * @apiParam {Number[]} [geolocation] New geolocation coordinates.
  * @apiParam {String} [picture] New URL of the picture associated with the place.
- * @apiParam {Date} [availabilityDate] New availability date of the place.
  *
  * @apiSuccess {String} message Success message.
  * @apiSuccess {Object} updatedPlace Details of the updated place.
@@ -251,7 +244,6 @@ router.post("/", authenticate, async (req, res) => {
  * @apiSuccess {String} updatedPlace.type Type of the place.
  * @apiSuccess {Number[]} updatedPlace.geolocation Geolocation coordinates.
  * @apiSuccess {String} updatedPlace.picture URL of the picture associated with the place.
- * @apiSuccess {Date} updatedPlace.availabilityDate Availability date of the place.
  * @apiSuccess {String} updatedPlace.userId Unique ID of the user who posted the place.
  * @apiSuccess {String} updatedPlace.reservationId Unique ID of the reservation associated with the place.
  *
@@ -265,7 +257,6 @@ router.post("/", authenticate, async (req, res) => {
  *             "type": "Parking couvert",
  *             "geolocation": [2.3522, 48.8566],
  *             "picture": "https://example.com/updated-parking.jpg",
- *             "availabilityDate": "2023-01-02T00:00:00.000Z",
  *             "userId": "637a42301497883f834a5cbb",
  *             "reservationId": "637a42301497883f834a5ccc"
  *         }
@@ -413,11 +404,14 @@ router.delete("/:placeId", authenticate, async (req, res) => {
  * @apiVersion 1.0.0
  * @apiPermission user
  *
- * @apiDescription Get all reservations associated with a specific place.
+ * @apiDescription Get all reservations associated with a specific place, with support for pagination.
  *
  * @apiHeader {String} Authorization User's access token.
  *
  * @apiParam {String} placeId Unique ID of the place.
+ *
+ * @apiQuery {Number} [page=1] Page number for pagination.
+ * @apiQuery {Number} [limit=10] Number of reservations per page.
  *
  * @apiSuccess {Number} total Total number of reservations for the place.
  * @apiSuccess {Number} page Current page number.

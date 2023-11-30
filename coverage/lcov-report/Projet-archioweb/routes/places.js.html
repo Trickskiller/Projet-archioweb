@@ -574,7 +574,25 @@
 <a name='L509'></a><a href='#L509'>509</a>
 <a name='L510'></a><a href='#L510'>510</a>
 <a name='L511'></a><a href='#L511'>511</a>
-<a name='L512'></a><a href='#L512'>512</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L512'></a><a href='#L512'>512</a>
+<a name='L513'></a><a href='#L513'>513</a>
+<a name='L514'></a><a href='#L514'>514</a>
+<a name='L515'></a><a href='#L515'>515</a>
+<a name='L516'></a><a href='#L516'>516</a>
+<a name='L517'></a><a href='#L517'>517</a>
+<a name='L518'></a><a href='#L518'>518</a>
+<a name='L519'></a><a href='#L519'>519</a>
+<a name='L520'></a><a href='#L520'>520</a>
+<a name='L521'></a><a href='#L521'>521</a>
+<a name='L522'></a><a href='#L522'>522</a>
+<a name='L523'></a><a href='#L523'>523</a>
+<a name='L524'></a><a href='#L524'>524</a>
+<a name='L525'></a><a href='#L525'>525</a>
+<a name='L526'></a><a href='#L526'>526</a>
+<a name='L527'></a><a href='#L527'>527</a>
+<a name='L528'></a><a href='#L528'>528</a>
+<a name='L529'></a><a href='#L529'>529</a>
+<a name='L530'></a><a href='#L530'>530</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1038,6 +1056,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1066,7 +1104,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1077,7 +1114,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1162,7 +1198,7 @@ router.get("/", <span class="fstat-no" title="function not covered" >as</span>yn
   }
 });
 &nbsp;
-//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places libres par exemple.
+//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places par exemple selon son type
 &nbsp;
 /**
  * @api {get} /places/:placeId Get place by ID
@@ -1291,13 +1327,13 @@ router.post("/", authenticate, <span class="fstat-no" title="function not covere
 &nbsp;
     const newPlace = <span class="cstat-no" title="statement not covered" >new Place({</span>
       ...req.body,
-      userId: req.currentUserId, // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+      userId: req.currentUserId, // Ajout de l'ID de l'utilisateur courant
     });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await newPlace.save();</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    broadcastMessage({</span>
-      type: 'new-place-available',
+      type: 'Nouvelle place disponible',
       data: {
         id: newPlace._id,
         description: newPlace.description,
@@ -1310,7 +1346,7 @@ router.post("/", authenticate, <span class="fstat-no" title="function not covere
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    res.status(201).json({ message: "Place créée avec succès", newPlace });</span>
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console.error("Erreur lors de la création de la place:", error); </span>// Log d'erreur plus détaillé
+<span class="cstat-no" title="statement not covered" >    console.error("Erreur lors de la création de la place:", error); </span>
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: error.message });</span>
   }
 });
@@ -1387,7 +1423,7 @@ router.put("/:placeId", authenticate, <span class="fstat-no" title="function not
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const placeId = <span class="cstat-no" title="statement not covered" >req.params.placeId;</span>
     const updateData = <span class="cstat-no" title="statement not covered" >req.body;</span>
-    const userId = <span class="cstat-no" title="statement not covered" >req.currentUserId;</span> // Assurez-vous que l'utilisateur authentifié est attaché à la requête
+    const userId = <span class="cstat-no" title="statement not covered" >req.currentUserId; </span>
 &nbsp;
     // Rechercher la place par ID
     const place = <span class="cstat-no" title="statement not covered" >await Place.findById(placeId);</span>
@@ -1497,6 +1533,8 @@ router.delete("/:placeId", authenticate, <span class="fstat-no" title="function 
  * @api {get} /places/:placeId/reservations Get reservations for a place
  * @apiName GetPlaceReservations
  * @apiGroup Place
+ * @apiVersion 1.0.0
+ * @apiPermission user
  *
  * @apiDescription Get all reservations associated with a specific place.
  *
@@ -1504,27 +1542,47 @@ router.delete("/:placeId", authenticate, <span class="fstat-no" title="function 
  *
  * @apiParam {String} placeId Unique ID of the place.
  *
- * @apiSuccess {Object[]} reservations List of reservations for the place.
- * @apiSuccess {String} reservations.userId ID of the renter user.
- * @apiSuccess {String} reservations.userName Username of the renter user.
- * @apiSuccess {Date} reservations.startDate Start date of the reservation.
- * @apiSuccess {Date} reservations.endDate End date of the reservation.
+ * @apiSuccess {Number} total Total number of reservations for the place.
+ * @apiSuccess {Number} page Current page number.
+ * @apiSuccess {Number} pageSize Number of reservations in the current page.
+ * @apiSuccess {Object[]} data List of reservations for the place.
+ * @apiSuccess {String} data._id Reservation ID.
+ * @apiSuccess {Object} data.renterUserId Renter user details.
+ * @apiSuccess {String} data.renterUserId._id Renter user ID.
+ * @apiSuccess {String} data.renterUserId.firstName Renter user's first name.
+ * @apiSuccess {String} data.renterUserId.lastName Renter user's last name.
+ * @apiSuccess {String} data.renterUserId.userName Renter user's username.
+ * @apiSuccess {Object} data.vehiculeId Vehicule details.
+ * @apiSuccess {String} data.vehiculeId.registrationNumber Vehicule registration number.
+ * @apiSuccess {Date} data.startDate Start date of the reservation.
+ * @apiSuccess {Date} data.endDate End date of the reservation.
  *
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *         "reservations": [
- *             {
- *                 "userId": "637a42301497883f834a5caa",
- *                 "userName": "jeando",
- *                 "startDate": "2022-11-20T15:05:20.254Z",
- *                 "endDate": "2022-11-21T15:05:20.254Z"
- *             }
- *         ]
+ *       "total": 25,
+ *       "page": 1,
+ *       "pageSize": 10,
+ *       "data": [
+ *         {
+ *           "_id": "5f50c31f1234567890123456",
+ *           "renterUserId": {
+ *             "_id": "5f50c31f1234567890123456",
+ *             "firstName": "Jean",
+ *             "lastName": "Doe",
+ *             "userName": "jeando"
+ *           },
+ *           "vehiculeId": {
+ *             "registrationNumber": "AB-123-CD"
+ *           },
+ *           "startDate": "2023-01-01T00:00:00.000Z",
+ *           "endDate": "2023-01-07T00:00:00.000Z"
+ *         }
+ *         // ... other reservations
+ *       ]
  *     }
  *
  * @apiError (Error 404) {Object} error Error object indicating the place was not found.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 404 Not Found
  *     {
@@ -1532,7 +1590,6 @@ router.delete("/:placeId", authenticate, <span class="fstat-no" title="function 
  *     }
  *
  * @apiError (Error 403) {Object} error Error object indicating unauthorized access.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 403 Forbidden
  *     {
@@ -1540,7 +1597,6 @@ router.delete("/:placeId", authenticate, <span class="fstat-no" title="function 
  *     }
  *
  * @apiError (Error 500) {Object} error Error object with a message.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 Internal Server Error
  *     {
@@ -1577,7 +1633,6 @@ router.get("/:placeId/reservations", authenticate, <span class="fstat-no" title=
       .skip(skip)
       .limit(limit);
 &nbsp;
-    // Optionnel: Compter le nombre total de réservations pour cette place
     const totalReservations = <span class="cstat-no" title="statement not covered" >await Reservation.countDocuments({ parkingId: placeId });</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
@@ -1593,7 +1648,6 @@ router.get("/:placeId/reservations", authenticate, <span class="fstat-no" title=
   }
 });
 &nbsp;
-// module.exports = router;
 &nbsp;
 export default router;
 &nbsp;</pre></td></tr></table></pre>
@@ -1603,7 +1657,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-30T14:43:04.879Z
+                at 2023-11-30T21:50:32.809Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
