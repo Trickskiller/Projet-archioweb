@@ -3,6 +3,8 @@ import app from "../app.js";
 import mongoose from "mongoose";
 import { cleanUpDatabase } from "./utils.js";
 import { User } from "../model/User.js";
+import { Place } from "../model/Place.js";
+
 import { generateValidJwt } from "./utils.js";
 
 // Avant de lancer les tests, on nettoie la base de données
@@ -112,44 +114,39 @@ describe("GET /users", function () {
         password: "123456789",
       }),
     ]);
+
+    await Promise.all([
+      Place.create({
+        description: "Place 1 de John",
+        type: "Parking ouvert",
+        geolocation : [48.856614, 2.3522219],
+        userId: johnDoe._id,
+      }),
+      Place.create({
+        description: "Place 2 de Jane",
+        type: "Garage",
+        geolocation : [5,45],
+        userId: janeDoe._id,
+      })
+    ]);
+
   });
 
-  // on obtient la liste des utilisateurs
-  test("should retrieve the list of users", async function () {
+  test('should retrieve a paginated list of users with places count', async () => {
     const res = await supertest(app)
-      .get("/users")
+      .get('/users?page=1&limit=2')
       .expect(200)
-      .expect("Content-Type", /json/);
-    expect(res.body).toBeArray();
-    expect(res.body).toHaveLength(2);
+      .expect('Content-Type', /json/);
 
-    expect(res.body[0]).toBeObject();
-    expect(res.body[0]._id).toBeString();
-    expect(res.body[0].admin).toBeFalse();
-    expect(res.body[0].firstName).toEqual("John");
-    expect(res.body[0].lastName).toEqual("Doe");
-    expect(res.body[0].userName).toEqual("john.doe");
-    expect(res.body[0]).toContainAllKeys([
-      "_id",
-      "admin",
-      "firstName",
-      "lastName",
-      "userName",
-    ]);
+    expect(res.body).toBeObject();
+    expect(res.body).toContainKeys(['total', 'page', 'pageSize', 'users']);
+    expect(res.body.users).toBeArray();
+    expect(res.body.users).toHaveLength(2); // Assurez-vous que ceci correspond à votre pagination
 
-    expect(res.body[1]).toBeObject();
-    expect(res.body[1]._id).toBeString();
-    expect(res.body[1].admin).toBeFalse();
-    expect(res.body[1].firstName).toEqual("Jane");
-    expect(res.body[1].lastName).toEqual("Doe");
-    expect(res.body[1].userName).toEqual("jane.doe");
-    expect(res.body[1]).toContainAllKeys([
-      "_id",
-      "admin",
-      "firstName",
-      "lastName",
-      "userName",
-    ]);
+    res.body.users.forEach((user) => {
+      expect(user).toContainAllKeys(['_id', 'firstName', 'lastName', 'userName', 'placesCount']);
+      expect(user.placesCount).toBeNumber(); // Assurez-vous que placesCount est un nombre
+    });
   });
 });
 
