@@ -7,8 +7,22 @@ import authenticate from "../auth.js";
 
 const router = express.Router();
 
+/**
+ * @api {get} /vehicules Get all vehicles
+ * @apiName GetVehicles
+ * @apiGroup Vehicles
+ *
+ * @apiSuccess {Object[]} vehicules List of vehicles.
+ * @apiSuccess {String} vehicules._id Vehicle ID.
+ * @apiSuccess {String} vehicules.model Vehicle model.
+ * @apiSuccess {String} vehicules.brand Vehicle brand.
+ * @apiSuccess {String} vehicules.registrationNumber Vehicle registration number.
+ * @apiSuccess {String} vehicules.userId Owner user ID.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour récupérer toutes les places
-
 router.get("/", async (req, res) => {
   try {
     const vehicules = await Vehicule.find();
@@ -19,6 +33,23 @@ router.get("/", async (req, res) => {
       .json({ error: "Erreur lors de la récupération des vehicules" });
   }
 });
+
+/**
+ * @api {get} /vehicules/:vehiculeId Get vehicle by ID
+ * @apiName GetVehicleById
+ * @apiGroup Vehicles
+ *
+ * @apiParam {String} vehiculeId Vehicle ID.
+ *
+ * @apiSuccess {String} _id Vehicle ID.
+ * @apiSuccess {String} model Vehicle model.
+ * @apiSuccess {String} brand Vehicle brand.
+ * @apiSuccess {String} registrationNumber Vehicle registration number.
+ * @apiSuccess {String} userId Owner user ID.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour récupérer un véhicule par son ID
 router.get("/:vehiculeId", async (req, res) => {
   try {
@@ -38,6 +69,22 @@ router.get("/:vehiculeId", async (req, res) => {
   }
 });
 
+/**
+ * @api {post} /vehicules Create a new vehicle
+ * @apiName CreateVehicle
+ * @apiGroup Vehicles
+ *
+ * @apiHeader {String} Authorization User's access token.
+ *
+ * @apiParam {String} model Vehicle model.
+ * @apiParam {String} brand Vehicle brand.
+ * @apiParam {String} registrationNumber Vehicle registration number.
+ *
+ * @apiSuccess {String} message Success message.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 //route pour créer un véhicule
 router.post("/", authenticate, async (req, res) => {
   try {
@@ -53,6 +100,20 @@ router.post("/", authenticate, async (req, res) => {
   }
 });
 
+/**
+ * @api {put} /vehicules/:vehiculeId Update vehicle by ID with owner verification
+ * @apiName UpdateVehicleById
+ * @apiGroup Vehicles
+ *
+ * @apiHeader {String} Authorization User's access token.
+ *
+ * @apiParam {String} vehiculeId Vehicle ID.
+ *
+ * @apiSuccess {String} message Success message.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route de mise à jour d'un véhicule par son ID, avec vérification du propriétaire
 router.put("/:vehiculeId", authenticate, async (req, res) => {
   try {
@@ -94,6 +155,20 @@ router.put("/:vehiculeId", authenticate, async (req, res) => {
   }
 });
 
+/**
+ * @api {delete} /vehicules/:vehiculeId Delete vehicle by ID with owner verification
+ * @apiName DeleteVehicleById
+ * @apiGroup Vehicles
+ *
+ * @apiHeader {String} Authorization User's access token.
+ *
+ * @apiParam {String} vehiculeId Vehicle ID.
+ *
+ * @apiSuccess {String} message Success message.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 router.delete("/:vehiculeId", authenticate, async (req, res) => {
   try {
     const vehiculeId = req.params.vehiculeId;

@@ -6,6 +6,19 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 const secretKey = process.env.SECRET_KEY;
 
+/**
+ * @api {post} /auth/signup Register a new user
+ * @apiName SignUp
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} userName User's username.
+ * @apiParam {String} password User's password.
+ *
+ * @apiSuccess {String} message Success message.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour enregistrer un nouvel utilisateur
 router.post("/signup", async (req, res) => {
   try {
@@ -34,6 +47,25 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+/**
+ * @api {post} /auth/connect Authenticate a user
+ * @apiName SignIn
+ * @apiGroup Authentication
+ *
+ * @apiParam {String} userName User's username.
+ * @apiParam {String} password User's password.
+ *
+ * @apiSuccess {String} token JSON Web Token (JWT).
+ * @apiSuccess {Object} user User object.
+ * @apiSuccess {String} user._id User ID.
+ * @apiSuccess {String} user.userName User's username.
+ * @apiSuccess {String} user.firstName User's first name.
+ * @apiSuccess {String} user.lastName User's last name.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour l'authentification d'un utilisateur
 router.post("/connect", async (req, res) => {
   try {

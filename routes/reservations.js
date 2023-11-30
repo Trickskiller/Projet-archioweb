@@ -12,6 +12,36 @@ import schedule from "node-schedule";
 
 const router = express.Router();
 
+/**
+ * @api {get} /reservations Get all reservations
+ * @apiName GetReservations
+ * @apiGroup Reservations
+ *
+ * @apiSuccess {Object[]} reservations List of reservations.
+ * @apiSuccess {String} reservations._id Reservation ID.
+ * @apiSuccess {String} reservations.parkingId Parking ID for the reservation.
+ * @apiSuccess {Object} reservations.renterUserId Renter user details.
+ * @apiSuccess {String} reservations.renterUserId._id Renter user ID.
+ * @apiSuccess {String} reservations.renterUserId.firstName Renter user's first name.
+ * @apiSuccess {String} reservations.renterUserId.lastName Renter user's last name.
+ * @apiSuccess {String} reservations.renterUserId.userName Renter user's username.
+ * @apiSuccess {Object} reservations.parkingId Parking details.
+ * @apiSuccess {String} reservations.parkingId._id Parking ID.
+ * @apiSuccess {String} reservations.parkingId.description Parking description.
+ * @apiSuccess {String} reservations.parkingId.type Parking type.
+ * @apiSuccess {Number[]} reservations.parkingId.geolocation Parking geolocation coordinates [longitude, latitude].
+ * @apiSuccess {String} reservations.parkingId.picture Parking picture URL.
+ * @apiSuccess {Date} reservations.parkingId.availabilityDate Parking availability date.
+ * @apiSuccess {Object} reservations.vehiculeId Vehicule details.
+ * @apiSuccess {String} reservations.vehiculeId._id Vehicule ID.
+ * @apiSuccess {String} reservations.vehiculeId.registrationNumber Vehicule registration number.
+ * @apiSuccess {Date} reservations.startDate Reservation start date.
+ * @apiSuccess {Date} reservations.endDate Reservation end date.
+ * @apiSuccess {String} reservations.status Reservation status.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour récupérer toutes les résa
 router.get("/", async (req, res) => {
   try {
@@ -24,6 +54,37 @@ router.get("/", async (req, res) => {
   }
 });
 
+/**
+ * @api {get} /reservations/:reservationId Get reservation by ID
+ * @apiName GetReservationById
+ * @apiGroup Reservations
+ *
+ * @apiParam {String} reservationId Reservation ID.
+ *
+ * @apiSuccess {String} _id Reservation ID.
+ * @apiSuccess {String} parkingId Parking ID for the reservation.
+ * @apiSuccess {Object} renterUserId Renter user details.
+ * @apiSuccess {String} renterUserId._id Renter user ID.
+ * @apiSuccess {String} renterUserId.firstName Renter user's first name.
+ * @apiSuccess {String} renterUserId.lastName Renter user's last name.
+ * @apiSuccess {String} renterUserId.userName Renter user's username.
+ * @apiSuccess {Object} parkingId Parking details.
+ * @apiSuccess {String} parkingId._id Parking ID.
+ * @apiSuccess {String} parkingId.description Parking description.
+ * @apiSuccess {String} parkingId.type Parking type.
+ * @apiSuccess {Number[]} parkingId.geolocation Parking geolocation coordinates [longitude, latitude].
+ * @apiSuccess {String} parkingId.picture Parking picture URL.
+ * @apiSuccess {Date} parkingId.availabilityDate Parking availability date.
+ * @apiSuccess {Object} vehiculeId Vehicule details.
+ * @apiSuccess {String} vehiculeId._id Vehicule ID.
+ * @apiSuccess {String} vehiculeId.registrationNumber Vehicule registration number.
+ * @apiSuccess {Date} startDate Reservation start date.
+ * @apiSuccess {Date} endDate Reservation end date.
+ * @apiSuccess {String} status Reservation status.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour récupérer une réservation par son ID
 router.get("/:reservationId", async (req, res) => {
   try {
@@ -31,11 +92,11 @@ router.get("/:reservationId", async (req, res) => {
 
     // Rechercher la réservation par son ID
     const reservation = await Reservation.findById(reservationId)
-      .populate('renterUserId', 'firstName lastName userName')
-      .populate('parkingId')
+      .populate("renterUserId", "firstName lastName userName")
+      .populate("parkingId")
       .populate({
-        path: 'vehiculeId',
-        select: 'registrationNumber'
+        path: "vehiculeId",
+        select: "registrationNumber",
       });
 
     // Vérifier si la réservation a été trouvée
@@ -45,10 +106,50 @@ router.get("/:reservationId", async (req, res) => {
 
     res.status(200).json(reservation);
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la récupération de la réservation" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la récupération de la réservation" });
   }
 });
 
+/**
+ * @api {post} /reservations Create a new reservation
+ * @apiName CreateReservation
+ * @apiGroup Reservations
+ *
+ * @apiHeader {String} Authorization User's access token.
+ *
+ * @apiParam {String} parkingId Parking ID for the reservation.
+ * @apiParam {Date} startDate Reservation start date.
+ * @apiParam {Date} endDate Reservation end date.
+ * @apiParam {String} vehiculeId Vehicule ID for the reservation.
+ *
+ * @apiSuccess {String} message Success message.
+ * @apiSuccess {Object} reservation Created reservation details.
+ * @apiSuccess {String} reservation._id Reservation ID.
+ * @apiSuccess {String} reservation.parkingId Parking ID for the reservation.
+ * @apiSuccess {Object} reservation.renterUserId Renter user details.
+ * @apiSuccess {String} reservation.renterUserId._id Renter user ID.
+ * @apiSuccess {String} reservation.renterUserId.firstName Renter user's first name.
+ * @apiSuccess {String} reservation.renterUserId.lastName Renter user's last name.
+ * @apiSuccess {String} reservation.renterUserId.userName Renter user's username.
+ * @apiSuccess {Object} reservation.parkingId Parking details.
+ * @apiSuccess {String} reservation.parkingId._id Parking ID.
+ * @apiSuccess {String} reservation.parkingId.description Parking description.
+ * @apiSuccess {String} reservation.parkingId.type Parking type.
+ * @apiSuccess {Number[]} reservation.parkingId.geolocation Parking geolocation coordinates [longitude, latitude].
+ * @apiSuccess {String} reservation.parkingId.picture Parking picture URL.
+ * @apiSuccess {Date} reservation.parkingId.availabilityDate Parking availability date.
+ * @apiSuccess {Object} reservation.vehiculeId Vehicule details.
+ * @apiSuccess {String} reservation.vehiculeId._id Vehicule ID.
+ * @apiSuccess {String} reservation.vehiculeId.registrationNumber Vehicule registration number.
+ * @apiSuccess {Date} reservation.startDate Reservation start date.
+ * @apiSuccess {Date} reservation.endDate Reservation end date.
+ * @apiSuccess {String} reservation.status Reservation status.
+ *
+ * @apiError {Object} error Error object with details.
+ * @apiError {String} error.message Error message.
+ */
 // Route pour créer une nouvelle réservation
 router.post("/", authenticate, async (req, res) => {
   try {
