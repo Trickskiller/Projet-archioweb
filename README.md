@@ -2,9 +2,9 @@
 
 ## Notre projet
 
-Le but de notre API consiste à développer une application mobile qui répertorie les places de parking disponibles. Les utilisateurs peuvent mettre à disposition leur place de parking et peuvent louer les places d’autres utilisateurs. L’utilisateur qui met en location sa place (bailleur), définit leur heures et dates de disponibilités pour les autres. Il pourra par la suite regarder quelle voiture utilise sa place de parc.
+Le but de notre API consiste à développer une application mobile qui permet de réservers de place de parking entre pariculier. Les utilisateurs peuvent mettre à disposition leur place de parking et peuvent louer les places d’autres utilisateurs. L’utilisateur qui met en location pourra par la suite regarder quelle voiture utilise sa place de parc.
 
-L’utilisateur qui souhaite louer une place va rechercher des places disponibles selon la date, l’heure et la localisation qu’il souhaite et pourra la réserver pour x temps.
+L’utilisateur qui souhaite louer une place va rechercher des places selon le type de place qu'il souhaite et pourra la réserver pour x temps.
 
 Le lien de notre app : https://parking-app-jc1u.onrender.com
 
