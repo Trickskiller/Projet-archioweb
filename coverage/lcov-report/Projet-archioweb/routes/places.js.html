@@ -586,13 +586,7 @@
 <a name='L521'></a><a href='#L521'>521</a>
 <a name='L522'></a><a href='#L522'>522</a>
 <a name='L523'></a><a href='#L523'>523</a>
-<a name='L524'></a><a href='#L524'>524</a>
-<a name='L525'></a><a href='#L525'>525</a>
-<a name='L526'></a><a href='#L526'>526</a>
-<a name='L527'></a><a href='#L527'>527</a>
-<a name='L528'></a><a href='#L528'>528</a>
-<a name='L529'></a><a href='#L529'>529</a>
-<a name='L530'></a><a href='#L530'>530</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L524'></a><a href='#L524'>524</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -716,9 +710,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -734,9 +725,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -819,9 +807,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -995,6 +980,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1138,16 +1126,18 @@ const router = express.Router();
  * @api {get} /places Get all places
  * @apiName GetAllPlaces
  * @apiGroup Place
+ * @apiVersion 1.0.0
+ * 
+ * @apiDescription Retrieve a list of all places. You can filter the places by type.
  *
- * @apiDescription Retrieve a list of all places.
- *
+ * @apiQuery {String} [type] Optional filter by type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
+ * 
  * @apiSuccess {Object[]} places List of places.
  * @apiSuccess {String} places._id Unique ID of the place.
  * @apiSuccess {String} places.description Description of the place.
  * @apiSuccess {String} places.type Type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
  * @apiSuccess {Number[]} places.geolocation Geolocation coordinates in the format [longitude, latitude].
  * @apiSuccess {String} places.picture URL of the picture associated with the place.
- * @apiSuccess {Date} places.availabilityDate Availability date of the place.
  * @apiSuccess {String} places.userId Unique ID of the user who posted the place.
  * @apiSuccess {String} places.reservationId Unique ID of the reservation associated with the place.
  *
@@ -1160,7 +1150,6 @@ const router = express.Router();
  *             "type": "Parking couvert",
  *             "geolocation": [2.3522, 48.8566],
  *             "picture": "https://example.com/parking.jpg",
- *             "availabilityDate": "2023-01-01T00:00:00.000Z",
  *             "userId": "637a42301497883f834a5cbb",
  *             "reservationId": "637a42301497883f834a5ccc"
  *         },
@@ -1168,7 +1157,6 @@ const router = express.Router();
  *     ]
  *
  * @apiError (Error 500) {Object} error Error object with a code.
- *
  * @apiErrorExample {json} Error-Response:
  *     HTTP/1.1 500 Internal Server Error
  *     {
@@ -1198,7 +1186,6 @@ router.get("/", <span class="fstat-no" title="function not covered" >as</span>yn
   }
 });
 &nbsp;
-//Pour filtrer la recherche de toutes les places, faire un filtre sur l'app avec des query où on peut avoir les places par exemple selon son type
 &nbsp;
 /**
  * @api {get} /places/:placeId Get place by ID
@@ -1214,7 +1201,6 @@ router.get("/", <span class="fstat-no" title="function not covered" >as</span>yn
  * @apiSuccess {String} type Type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
  * @apiSuccess {Number[]} geolocation Geolocation coordinates in the format [longitude, latitude].
  * @apiSuccess {String} picture URL of the picture associated with the place.
- * @apiSuccess {Date} availabilityDate Availability date of the place.
  * @apiSuccess {String} userId Unique ID of the user who posted the place.
  * @apiSuccess {String} reservationId Unique ID of the reservation associated with the place.
  *
@@ -1226,7 +1212,6 @@ router.get("/", <span class="fstat-no" title="function not covered" >as</span>yn
  *         "type": "Parking couvert",
  *         "geolocation": [2.3522, 48.8566],
  *         "picture": "https://example.com/parking.jpg",
- *         "availabilityDate": "2023-01-01T00:00:00.000Z",
  *         "userId": "637a42301497883f834a5cbb",
  *         "reservationId": "637a42301497883f834a5ccc"
  *     }
@@ -1281,7 +1266,6 @@ router.get("/:placeId", <span class="fstat-no" title="function not covered" >as<
  * @apiParam {String} type Type of the place (e.g., "Parking couvert", "Parking ouvert", "Garage", "Autre").
  * @apiParam {Number[]} geolocation Geolocation coordinates in the format [longitude, latitude].
  * @apiParam {String} [picture] URL of the picture associated with the place.
- * @apiParam {Date} [availabilityDate] Availability date of the place.
  *
  * @apiSuccess {String} message Success message.
  * @apiSuccess {Object} newPlace Details of the newly created place.
@@ -1290,7 +1274,6 @@ router.get("/:placeId", <span class="fstat-no" title="function not covered" >as<
  * @apiSuccess {String} newPlace.type Type of the place.
  * @apiSuccess {Number[]} newPlace.geolocation Geolocation coordinates.
  * @apiSuccess {String} newPlace.picture URL of the picture associated with the place.
- * @apiSuccess {Date} newPlace.availabilityDate Availability date of the place.
  * @apiSuccess {String} newPlace.userId Unique ID of the user who posted the place.
  * @apiSuccess {String} newPlace.reservationId Unique ID of the reservation associated with the place.
  *
@@ -1304,7 +1287,6 @@ router.get("/:placeId", <span class="fstat-no" title="function not covered" >as<
  *             "type": "Parking couvert",
  *             "geolocation": [2.3522, 48.8566],
  *             "picture": "https://example.com/parking.jpg",
- *             "availabilityDate": "2023-01-01T00:00:00.000Z",
  *             "userId": "637a42301497883f834a5cbb",
  *             "reservationId": "637a42301497883f834a5ccc"
  *         }
@@ -1365,7 +1347,6 @@ router.post("/", authenticate, <span class="fstat-no" title="function not covere
  * @apiParam {String} [type] New type of the place.
  * @apiParam {Number[]} [geolocation] New geolocation coordinates.
  * @apiParam {String} [picture] New URL of the picture associated with the place.
- * @apiParam {Date} [availabilityDate] New availability date of the place.
  *
  * @apiSuccess {String} message Success message.
  * @apiSuccess {Object} updatedPlace Details of the updated place.
@@ -1374,7 +1355,6 @@ router.post("/", authenticate, <span class="fstat-no" title="function not covere
  * @apiSuccess {String} updatedPlace.type Type of the place.
  * @apiSuccess {Number[]} updatedPlace.geolocation Geolocation coordinates.
  * @apiSuccess {String} updatedPlace.picture URL of the picture associated with the place.
- * @apiSuccess {Date} updatedPlace.availabilityDate Availability date of the place.
  * @apiSuccess {String} updatedPlace.userId Unique ID of the user who posted the place.
  * @apiSuccess {String} updatedPlace.reservationId Unique ID of the reservation associated with the place.
  *
@@ -1388,7 +1368,6 @@ router.post("/", authenticate, <span class="fstat-no" title="function not covere
  *             "type": "Parking couvert",
  *             "geolocation": [2.3522, 48.8566],
  *             "picture": "https://example.com/updated-parking.jpg",
- *             "availabilityDate": "2023-01-02T00:00:00.000Z",
  *             "userId": "637a42301497883f834a5cbb",
  *             "reservationId": "637a42301497883f834a5ccc"
  *         }
@@ -1536,11 +1515,14 @@ router.delete("/:placeId", authenticate, <span class="fstat-no" title="function 
  * @apiVersion 1.0.0
  * @apiPermission user
  *
- * @apiDescription Get all reservations associated with a specific place.
+ * @apiDescription Get all reservations associated with a specific place, with support for pagination.
  *
  * @apiHeader {String} Authorization User's access token.
  *
  * @apiParam {String} placeId Unique ID of the place.
+ *
+ * @apiQuery {Number} [page=1] Page number for pagination.
+ * @apiQuery {Number} [limit=10] Number of reservations per page.
  *
  * @apiSuccess {Number} total Total number of reservations for the place.
  * @apiSuccess {Number} page Current page number.
@@ -1657,7 +1639,7 @@ export default router;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-11-30T21:50:32.809Z
+                at 2023-11-30T22:38:47.956Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
