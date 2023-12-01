@@ -8,10 +8,8 @@ import loginRouter from "./routes/login.js";
 import placesRouter from "./routes/places.js";
 import reservationsRouter from "./routes/reservations.js";
 import path from "path";
-import fs from "fs";
-import yaml from "js-yaml";
-import swaggerUi from "swagger-ui-express";
-import { fileURLToPath } from 'url';
+
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,11 +21,8 @@ mongoose.connect(
   process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/ParkingLocationApp"
 );
 
-
 const app = express();
 app.use(cors());
-
-
 
 /* // Parse the OpenAPI document.
 const openApiDocument = yaml.load(fs.readFileSync("./openapi.yml"));
@@ -53,7 +48,6 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
@@ -66,5 +60,3 @@ app.use(function (err, req, res, next) {
 });
 
 export default app;
-
-

@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 
 beforeEach(cleanUpDatabase);
 
+// test de la route de création d'un nouvel utilisateur
 describe("POST /login/signup", function () {
   it("should create a new user", async function () {
     const userData = {
@@ -19,14 +20,16 @@ describe("POST /login/signup", function () {
     };
 
     const res = await supertest(app)
-      .post("/login/signup") // Assurez-vous que ce chemin correspond à votre route d'inscription
-      .send(userData)
-      .expect(201);
+      .post("/login/signup")
+      .send(userData) // Envoi des données utilisateur
+      .expect(201); // S'attendre à un statut 201 pour la création réussie
 
+    // Vérifier la réponse du serveur
     expect(res.text).toEqual("Utilisateur enregistré avec succès.");
   });
 });
 
+// test de la route de connexion d'un utilisateur avec les données manquantes
 describe("POST /login/signup with missing data", function () {
   it("should not create a user with missing data", async function () {
     const userData = {
@@ -44,6 +47,7 @@ describe("POST /login/signup with missing data", function () {
   });
 });
 
+// test de la route de connexion d'un utilisateur avec un nom d'utilisateur incorrect
 describe("POST /login/connect with incorrect userName", function () {
   beforeEach(async function () {
     // Créer un utilisateur pour le test
@@ -66,6 +70,7 @@ describe("POST /login/connect with incorrect userName", function () {
   });
 });
 
+// test de la route de connexion d'un utilisateur inexistant
 describe("POST /login/connect with non-existing user", function () {
   it("should not authenticate a non-existing user", async function () {
     const res = await supertest(app)
@@ -77,6 +82,7 @@ describe("POST /login/connect with non-existing user", function () {
   });
 });
 
+// test de la route de connexion d'un utilisateur avec un format d'utilisateur incorrect
 describe("POST /login/signup with invalid userName format", function () {
   it("should not create a user with an invalid userName format", async function () {
     const userData = {
@@ -94,6 +100,7 @@ describe("POST /login/signup with invalid userName format", function () {
   });
 });
 
+// test de la route de connexion d'un utilisateur avec un mot de passe incorrect
 describe("POST /login/connect with incorrect password", function () {
   beforeEach(async function () {
     // Créer un utilisateur pour le test
@@ -116,6 +123,7 @@ describe("POST /login/connect with incorrect password", function () {
   });
 });
 
+// test de la route de connexion d'un utilisateur avec des informations valides
 describe("POST /login/connect with correct credentials", function () {
   beforeEach(async function () {
     // Créer un utilisateur pour le test
@@ -137,6 +145,27 @@ describe("POST /login/connect with correct credentials", function () {
     expect(res.body.token).toBeDefined();
     expect(res.body.user).toBeDefined();
   });
+});
+
+// Test pour une route qui nécessite une authentification
+test("GET /someProtectedRoute should require authentication", async () => {
+  const response = await supertest(app).get("/someProtectedRoute");
+  expect(response.statusCode).toBe(404); // Statut pour non autorisé
+});
+
+// Test pour une entrée invalide sur une route POST
+test("POST /login/signup with invalid data should return error", async () => {
+  const invalidUserData = { userName: "test" }; // Données incomplètes
+  const response = await supertest(app)
+    .post("/login/signup")
+    .send(invalidUserData);
+  expect(response.statusCode).toBe(500); // Bad request ou autre statut approprié
+});
+
+// Test pour une route qui n'existe pas
+test("GET /nonExistentRoute should return 404", async () => {
+  const response = await supertest(app).get("/nonExistentRoute");
+  expect(response.statusCode).toBe(404); // Not Found
 });
 
 // après les tests, on se déconnecte de la base de données

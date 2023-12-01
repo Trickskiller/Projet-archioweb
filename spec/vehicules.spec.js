@@ -45,7 +45,15 @@ describe("POST /vehicules", function () {
 
     // Vérifier les données du véhicule créé
     expect(res.body).toBeObject();
-    expect(res.text).toEqual("Véhicule enregistré avec succès.");
+    expect(res.body.message).toEqual("Véhicule enregistré avec succès.");
+    expect(res.body.newVehicule).toBeDefined();
+    expect(res.body.newVehicule.type).toEqual(vehicleData.type);
+    expect(res.body.newVehicule.registrationNumber).toEqual(
+      vehicleData.registrationNumber
+    );
+    expect(res.body.newVehicule.color).toEqual(vehicleData.color);
+    expect(res.body.newVehicule.brand).toEqual(vehicleData.brand);
+    expect(res.body.newVehicule.userId).toEqual(user._id.toString());
   });
 });
 
@@ -127,18 +135,43 @@ describe("GET /vehicules/:vehiculeId", function () {
 
     expect(res.body._id).toEqual(vehicle._id.toString());
   });
+
+  // Test GET /vehicules/:vehiculeId pour un véhicule non existant
+  describe("GET /vehicules/:vehiculeId for non-existing vehicle", () => {
+    let token;
+
+    beforeEach(async () => {
+      const user =
+        (await User.create({
+          $admin: false,
+          firstName: "Ashley",
+          lastName: "Williams",
+          userName: "terra.firma",
+          password: "shootStuff324",
+        })) || {};
+      token = await generateValidJwt(user);
+    });
+
+    it("should return 404 for a non-existing vehicle", async () => {
+      const nonExistingVehicleId = new mongoose.Types.ObjectId().toString();
+      const res = await supertest(app)
+        .get(`/vehicules/${nonExistingVehicleId}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.error).toBeDefined();
+    });
+  });
 });
 
 ///////////////////////// PUT /////////////////////////////
 
-// test de la route pour mettre à jour un véhicule
+// Test de mise à jour d'un véhicule existant
 describe("PUT /vehicules/:vehiculeId", function () {
   let vehicle, updatedData, token;
 
   beforeEach(async function () {
-    // Création d'un utilisateur et d'un véhicule pour le test
     const user = await User.create({
-      $admin: false,
+      admin: false,
       firstName: "John",
       lastName: "Doe",
       userName: "john.doe",
@@ -172,6 +205,84 @@ describe("PUT /vehicules/:vehiculeId", function () {
 
     expect(res.body).toBeObject();
     expect(res.body.message).toEqual("Véhicule mis à jour avec succès");
+  });
+});
+
+// Test de mise à jour d'un véhicule non existant
+describe("PUT /vehicules/:vehiculeId for non-existing vehicle", () => {
+  let token;
+
+  beforeEach(async () => {
+    const user = await User.create({
+      admin: false,
+      firstName: "Thane",
+      lastName: "Krios",
+      userName: "drellAssassin",
+      password: "hanariSniper33",
+    });
+    token = await generateValidJwt(user);
+  });
+
+  it("should return 404 for a non-existing vehicle", async () => {
+    const nonExistingVehicleId = new mongoose.Types.ObjectId().toString();
+    const res = await supertest(app)
+      .put(`/vehicules/${nonExistingVehicleId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(404);
+
+    expect(res.body.error).toBeDefined();
+  });
+});
+
+// Test de mise à jour d'un véhicule avec un utilisateur non autorisé
+describe("PUT /vehicules/:vehiculeId with unauthorized user", () => {
+  let vehicle, unauthorizedUserToken;
+
+  beforeEach(async () => {
+    // Création d'un utilisateur propriétaire du véhicule
+    const ownerUser = await User.create({
+      admin: false,
+      firstName: "James",
+      lastName: "Vega",
+      userName: "allianceSoldier",
+      password: "FutureN7",
+    });
+
+    // Création d'un véhicule appartenant à ownerUser
+    vehicle = await Vehicule.create({
+      type: "Voiture",
+      registrationNumber: "ABC123",
+      color: "Red",
+      brand: "Toyota",
+      userId: ownerUser._id,
+    });
+
+    // Création d'un autre utilisateur (non autorisé)
+    const unauthorizedUser = await User.create({
+      admin: false,
+      firstName: "Jack",
+      lastName: "Harper",
+      userName: "cerberusLeader",
+      password: "IllusiveMan",
+    });
+    unauthorizedUserToken = await generateValidJwt(unauthorizedUser);
+  });
+
+  it("should not allow an unauthorized user to update the vehicle", async () => {
+    const updatedData = {
+      type: "Moto",
+      registrationNumber: "XYZ789",
+      color: "Blue",
+      brand: "Honda",
+    };
+
+    const res = await supertest(app)
+      .put(`/vehicules/${vehicle._id}`)
+      .set("Authorization", `Bearer ${unauthorizedUserToken}`)
+      .send(updatedData);
+
+    expect(res.statusCode).toBe(403); // Forbidden
+    expect(res.body.error).toBeDefined();
   });
 });
 
@@ -211,7 +322,7 @@ describe("DELETE /vehicules/:vehiculeId", function () {
     expect(res.body).toBeObject();
     expect(res.body.message).toEqual("Véhicule supprimé avec succès");
 
-    // Vérifiez si le véhicule a bien été supprimé de la base de données
+    // Vérification pour voir si le véhicule a bien été supprimé de la base de données
     const deletedVehicle = await Vehicule.findById(vehicle._id);
     expect(deletedVehicle).toBeNull();
   });
@@ -243,8 +354,34 @@ describe("DELETE /vehicules/:vehiculeId for non-existing vehicle", function () {
 
     expect(res.body.error).toBeDefined();
   });
+
+  // Test DELETE /vehicules/:vehiculeId pour un véhicule non existant
+  describe("DELETE /vehicules/:vehiculeId for non-existing vehicle", () => {
+    let token;
+
+    beforeEach(async () => {
+      const user = await User.create({
+        $admin: false,
+        firstName: "Wrex",
+        lastName: "Urdnot",
+        userName: "kroganWarlord",
+        password: "gruntIsMySon",
+      });
+      token = await generateValidJwt(user);
+    });
+
+    it("should return 404 for a non-existing vehicle", async () => {
+      const nonExistingVehicleId = new mongoose.Types.ObjectId().toString();
+      const res = await supertest(app)
+        .delete(`/vehicules/${nonExistingVehicleId}`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(res.statusCode).toBe(404);
+      expect(res.body.error).toBeDefined();
+    });
+  });
 });
 
+// après les tests, on se déconnecte de la base de données
 afterAll(async () => {
   await mongoose.disconnect();
 });

@@ -114,38 +114,44 @@ describe("GET /users", function () {
         password: "123456789",
       }),
     ]);
-
+    // on crée deux places dans la base de données
     await Promise.all([
       Place.create({
         description: "Place 1 de John",
         type: "Parking ouvert",
-        geolocation : [48.856614, 2.3522219],
+        geolocation: [48.856614, 2.3522219],
         userId: johnDoe._id,
       }),
       Place.create({
         description: "Place 2 de Jane",
         type: "Garage",
-        geolocation : [5,45],
+        geolocation: [5, 45],
         userId: janeDoe._id,
-      })
+      }),
     ]);
-
   });
 
-  test('should retrieve a paginated list of users with places count', async () => {
+  // test de la route pour récupérer la liste des utilisateurs avec le nombre de places (pagination)
+  test("should retrieve a paginated list of users with places count", async () => {
     const res = await supertest(app)
-      .get('/users?page=1&limit=2')
+      .get("/users?page=1&limit=2")
       .expect(200)
-      .expect('Content-Type', /json/);
+      .expect("Content-Type", /json/);
 
     expect(res.body).toBeObject();
-    expect(res.body).toContainKeys(['total', 'page', 'pageSize', 'users']);
+    expect(res.body).toContainKeys(["total", "page", "pageSize", "users"]);
     expect(res.body.users).toBeArray();
-    expect(res.body.users).toHaveLength(2); // Assurez-vous que ceci correspond à votre pagination
+    expect(res.body.users).toHaveLength(2);
 
     res.body.users.forEach((user) => {
-      expect(user).toContainAllKeys(['_id', 'firstName', 'lastName', 'userName', 'placesCount']);
-      expect(user.placesCount).toBeNumber(); // Assurez-vous que placesCount est un nombre
+      expect(user).toContainAllKeys([
+        "_id",
+        "firstName",
+        "lastName",
+        "userName",
+        "placesCount",
+      ]);
+      expect(user.placesCount).toBeNumber();
     });
   });
 });
@@ -178,7 +184,7 @@ describe("GET /users/:userId", function () {
   });
 });
 
-// on vérifie si la route pour récupérer un utilisateur par son ID fonctionne pour un utilisateur qui n'existe pas
+// on vérifie si la route pour récupérer un utilisateur par son ID nefonctionne pas pour un utilisateur qui n'existe pas
 describe("GET /users/:userId for non-existing user", function () {
   it("should not find a non-existing user", async function () {
     const nonExistingUserId = new mongoose.Types.ObjectId();
@@ -192,6 +198,8 @@ describe("GET /users/:userId for non-existing user", function () {
 });
 
 // PUT///////////////////////////////////////////////////////////
+
+// test de la route pour modifier un utilisateur
 describe("PUT /users/:userId", function () {
   let user, token;
 
@@ -265,7 +273,7 @@ describe("DELETE /users/:userId", function () {
   });
 });
 
-// test de la route pour supprimer un utilisateur par son ID pour un utilisateur qui n'existe pas
+// test de la route pour supprimer un utilisateur non existant par son id
 describe("DELETE /users/:userId for non-existing user", function () {
   it("should not delete a non-existing user", async function () {
     const nonExistingUserId = new mongoose.Types.ObjectId();

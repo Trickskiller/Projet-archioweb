@@ -96,7 +96,9 @@ router.post("/", authenticate, async (req, res) => {
     newVehicule.userId = req.currentUserId;
     console.log(req.currentUserId);
     await newVehicule.save();
-    res.status(201).send("Véhicule enregistré avec succès.",newVehicule);
+    res
+      .status(201)
+      .json({ message: "Véhicule enregistré avec succès.", newVehicule });
   } catch (error) {
     res.status(500).json({ error: "Erreur de création de véhicule" });
   }

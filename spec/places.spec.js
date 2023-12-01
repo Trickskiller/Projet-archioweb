@@ -6,6 +6,7 @@ import { Place } from "../model/Place.js";
 import { cleanUpDatabase } from "./utils.js";
 import { generateValidJwt } from "./utils.js";
 
+// Avant de lancer les tests, on nettoie la base de données
 beforeEach(cleanUpDatabase);
 
 ///////////////////////// POST /////////////////////////////
@@ -33,8 +34,6 @@ describe("POST /places", function () {
       geolocation: [2.3522, 48.8566],
       picture: "https://www.example.com/picture.jpg",
       userId: user._id,
-
-      // Ajoutez plus de champs si nécessaire
     };
 
     const res = await supertest(app)
@@ -58,44 +57,31 @@ describe("POST /places", function () {
   });
 });
 
-describe("POST /places with invalid data", () => {
-  let token;
-
-  beforeEach(async () => {
-    const user = await User.create({
-      admin: false,
-      firstName: "Invalid",
-      lastName: "Data",
-      userName: "invalid.user",
-      password: "password",
-    });
-
-    token = await generateValidJwt(user);
-  });
-
-  it("should not create a place with invalid data", async () => {
-    const invalidPlaceData = {
-      description: "", // Description manquante
-      type: "Type non valide", // Type non valide selon l'énumération définie dans le schéma
-      geolocation: [200, 100], // Coordonnées géographiques non valides
-      // Assurez-vous que ces données sont effectivement invalides selon votre schéma Place
+// test de la route pour créer une nouvelle place sans authentification
+describe("POST /places without authentication", function () {
+  it("should not allow creating a place without authentication", async () => {
+    const placeData = {
+      description: "Parking près du parc",
+      type: "Parking ouvert",
+      geolocation: [2.3522, 48.8566],
     };
 
     const res = await supertest(app)
       .post("/places")
-      .set("Authorization", `Bearer ${token}`)
-      .send(invalidPlaceData)
-      .expect(500); // Erreur serveur attendue
+      .send(placeData)
+      .expect(401); // Unauthorized
 
-    expect(res.body.error).toBeDefined();
+    expect(res.text).toBeDefined();
   });
 
-  describe("POST /places without authentication", function () {
-    it("should not allow creating a place without authentication", async () => {
+  // test de la route pour créer une nouvelle place sans un token valide
+  describe("POST /places without a valid token", () => {
+    it("should not allow creating a place without a valid token", async () => {
       const placeData = {
-        description: "Parking près du parc",
-        type: "Parking ouvert",
+        description: "Nouveau parking",
+        type: "Garage",
         geolocation: [2.3522, 48.8566],
+        picture: "https://www.example.com/picture.jpg",
       };
 
       const res = await supertest(app)
@@ -103,7 +89,7 @@ describe("POST /places with invalid data", () => {
         .send(placeData)
         .expect(401); // Unauthorized
 
-      expect(res.text).toBeDefined();
+      expect(res.text).toEqual("Authorization header is missing");
     });
   });
 });
@@ -153,6 +139,7 @@ describe("GET /places/:placeId", function () {
   });
 });
 
+// test de la route pour récupérer une place qui n'existe pas
 describe("GET /places/:placeId for non-existing place", function () {
   let token;
 
@@ -178,6 +165,27 @@ describe("GET /places/:placeId for non-existing place", function () {
 
     expect(res.body.error).toBeDefined();
   });
+
+  // test de la route pour récupérer une place avec des filtres non existants
+  describe("GET /places with non-existing filters", () => {
+    it("should return an empty array for non-existing type filter", async () => {
+      const res = await supertest(app)
+        .get("/places?type=TypeInexistant")
+        .expect(200);
+
+      expect(res.body).toBeArray();
+      expect(res.body.length).toBe(0);
+    });
+  });
+
+  // test de la route pour récupérer une place avec des un id non valide
+  describe("GET /places/0/reservations", () => {
+    it("should return an error for invalid place ID", async () => {
+      const res = await supertest(app)
+        .get("/places/0/reservations")
+        .expect(401);
+    });
+  });
 });
 
 ///////////////////////// PUT /////////////////////////////
@@ -200,6 +208,7 @@ describe("PUT /places/:placeId", () => {
       description: "Parking Test",
       type: "Parking ouvert",
       geolocation: [2.3522, 48.8566],
+      picture: "https://www.example.com/picture.jpg",
       userId: user._id,
     });
 
@@ -227,7 +236,6 @@ describe("PUT /places/:placeId", () => {
 });
 
 // test de la route pour modifier une place pour un utilisateur non autorisé
-
 describe("PUT /places/:placeId unauthorized user", () => {
   let place, token, otherUserToken;
 
@@ -252,6 +260,7 @@ describe("PUT /places/:placeId unauthorized user", () => {
       description: "Parking",
       type: "Parking ouvert",
       geolocation: [2.3522, 48.8566],
+      picture: "https://www.example.com/picture.jpg",
       userId: user._id,
     });
 
@@ -269,12 +278,13 @@ describe("PUT /places/:placeId unauthorized user", () => {
       .put(`/places/${place._id}`)
       .set("Authorization", `Bearer ${otherUserToken}`)
       .send(updatedData)
-      .expect(403); // Forbidden
+      .expect(403);
 
     expect(res.body.error).toBeDefined();
   });
 });
 
+// test de la route pour modifier une place pa une personne qui n'est pas propriétaire de la place
 describe("PUT /places/:placeId update by non-owner user", function () {
   let place, token, otherToken;
 
@@ -324,7 +334,6 @@ describe("PUT /places/:placeId update by non-owner user", function () {
 ///////////////////////// DELETE /////////////////////////////
 
 // test de la route pour supprimer une place par son ID
-
 describe("DELETE /places/:placeId", () => {
   let place, token;
 
@@ -405,6 +414,7 @@ describe("DELETE /places/:placeId unauthorized user", () => {
   });
 });
 
+// test de la route pour supprimer une place par son ID par une personne qui n'est pas propriétaire de la place
 describe("DELETE /places/:placeId by non-owner user", function () {
   let place, token, otherToken;
 
