@@ -1,12 +1,16 @@
 import { User } from "../model/User";
+import { Vehicule } from "../model/Vehicule";
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
 import { jwtSecret } from "../config.js";
+import { Place } from "../model/Place";
 
 const signJwt = promisify(jwt.sign);
 
 export const cleanUpDatabase = async function () {
   await Promise.all([User.deleteMany()]);
+  await Vehicule.deleteMany({});
+  await Place.deleteMany({});
 };
 
 export function generateValidJwt(user) {

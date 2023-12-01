@@ -65,7 +65,9 @@ router.get("/:vehiculeId", async (req, res) => {
 
     res.status(200).json(vehicule);
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la récupération du véhicule" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la récupération du véhicule" });
   }
 });
 
@@ -144,9 +146,7 @@ router.put("/:vehiculeId", authenticate, async (req, res) => {
     );
     console.log("Véhicule mis à jour", updatedVehicule);
 
-    res
-      .status(200)
-      .json({ message: "Véhicule mis à jour avec succès"});
+    res.status(200).json({ message: "Véhicule mis à jour avec succès" });
   } catch (error) {
     console.error("Erreur lors de la mise à jour:", error);
     res
@@ -172,7 +172,7 @@ router.put("/:vehiculeId", authenticate, async (req, res) => {
 router.delete("/:vehiculeId", authenticate, async (req, res) => {
   try {
     const vehiculeId = req.params.vehiculeId;
-    const userId = req.currentUserId; 
+    const userId = req.currentUserId; // Assurez-vous que l'ID de l'utilisateur actuel est attaché à la requête
 
     // Rechercher le véhicule par ID
     const vehicule = await Vehicule.findById(vehiculeId);
@@ -192,9 +192,12 @@ router.delete("/:vehiculeId", authenticate, async (req, res) => {
 
     res.status(200).json({ message: "Véhicule supprimé avec succès" });
   } catch (error) {
-    res.status(500).json({ error: "Erreur lors de la suppression du véhicule" });
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la suppression du véhicule" });
   }
 });
 
+// module.exports = router;
 
 export default router;
